@@ -1,0 +1,6805 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#080b16">
+
+  <meta name="description"
+        content="Discover, customize and explore powerful AI prompts with PROMPT.">
+
+  <title>PROMPT — Discover Better AI Prompts</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+
+    /* =====================================
+       01. ROOT DESIGN SYSTEM
+    ===================================== */
+
+    :root {
+
+      --bg-main: #080b16;
+      --bg-secondary: #0d1222;
+      --bg-card: #11182b;
+      --bg-card-hover: #17213a;
+
+      --primary: #8b5cf6;
+      --primary-light: #a78bfa;
+      --secondary: #3b82f6;
+      --accent: #06b6d4;
+
+      --text-primary: #f8fafc;
+      --text-secondary: #a1aabd;
+      --text-muted: #68748b;
+
+      --border: rgba(255,255,255,0.09);
+      --border-active: rgba(139,92,246,0.5);
+
+      --gradient-main:
+        linear-gradient(
+          135deg,
+          #8b5cf6,
+          #3b82f6
+        );
+
+      --gradient-aurora:
+        radial-gradient(
+          circle at 20% 20%,
+          rgba(139,92,246,0.19),
+          transparent 35%
+        ),
+        radial-gradient(
+          circle at 80% 10%,
+          rgba(59,130,246,0.16),
+          transparent 35%
+        );
+
+      --shadow-card:
+        0 15px 45px rgba(0,0,0,0.25);
+
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 22px;
+      --radius-xl: 30px;
+
+      --container: 1280px;
+
+      --font-main: 'DM Sans', sans-serif;
+      --font-heading: 'Space Grotesk', sans-serif;
+
+      --transition: 0.25s ease;
+
+    }
+
+
+    /* =====================================
+       02. RESET & GLOBAL STYLES
+    ===================================== */
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: var(--gradient-aurora);
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      color: inherit;
+    }
+
+    input,
+    textarea {
+      color: var(--text-primary);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    ::selection {
+      background: rgba(139,92,246,0.4);
+      color: white;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-main);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #343052;
+      border-radius: 20px;
+    }
+
+
+    /* =====================================
+       03. REUSABLE LAYOUT
+    ===================================== */
+
+    .container {
+      width: min(
+        calc(100% - 48px),
+        var(--container)
+      );
+      margin-inline: auto;
+    }
+
+    .section {
+      padding: 85px 0;
+      position: relative;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 35px;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: clamp(27px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.2;
+    }
+
+    .section-description {
+      color: var(--text-secondary);
+      max-width: 550px;
+      margin-top: 12px;
+      font-size: 15px;
+    }
+
+    .gradient-text {
+      background: var(--gradient-main);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary-light);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+
+    /* =====================================
+       04. BUTTON SYSTEM
+    ===================================== */
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 11px 20px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      font-size: 14px;
+      font-weight: 700;
+      transition:
+        transform var(--transition),
+        background var(--transition),
+        border-color var(--transition),
+        box-shadow var(--transition);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: var(--gradient-main);
+      color: white;
+      box-shadow:
+        0 8px 25px rgba(139,92,246,0.2);
+    }
+
+    .btn-primary:hover {
+      box-shadow:
+        0 12px 30px rgba(139,92,246,0.35);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.04);
+      border-color: var(--border);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.09);
+      border-color: var(--border-active);
+    }
+
+    .btn-icon {
+      width: 42px;
+      height: 42px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+
+    .btn-icon:hover {
+      color: white;
+      border-color: var(--border-active);
+      background: rgba(139,92,246,0.15);
+    }
+
+
+    /* =====================================
+       05. CARD SYSTEM
+    ===================================== */
+
+    .card {
+      background: linear-gradient(
+        145deg,
+        rgba(255,255,255,0.055),
+        rgba(255,255,255,0.018)
+      );
+
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+
+      transition:
+        transform var(--transition),
+        border-color var(--transition),
+        background var(--transition),
+        box-shadow var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: var(--border-active);
+      background-color: var(--bg-card-hover);
+      box-shadow: var(--shadow-card);
+    }
+
+    .glass-panel {
+      background: rgba(17,24,43,0.72);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+
+    /* =====================================
+       06. INPUT SYSTEM
+    ===================================== */
+
+    .input-field {
+      width: 100%;
+      min-height: 48px;
+      padding: 13px 16px;
+      border-radius: 12px;
+
+      background: rgba(255,255,255,0.045);
+      border: 1px solid var(--border);
+
+      color: var(--text-primary);
+      outline: none;
+
+      transition:
+        border-color var(--transition),
+        box-shadow var(--transition);
+    }
+
+    .input-field::placeholder {
+      color: var(--text-muted);
+    }
+
+    .input-field:focus {
+      border-color: var(--primary);
+      box-shadow:
+        0 0 0 3px rgba(139,92,246,0.13);
+    }
+
+    textarea.input-field {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    select.input-field option {
+      background: var(--bg-secondary);
+      color: white;
+    }
+
+
+    /* =====================================
+       07. BADGES & TAGS
+    ===================================== */
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      padding: 6px 10px;
+
+      border-radius: 30px;
+
+      background: rgba(139,92,246,0.12);
+      border: 1px solid rgba(139,92,246,0.2);
+
+      color: var(--primary-light);
+
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 7px;
+
+      background: rgba(255,255,255,0.05);
+      color: var(--text-secondary);
+
+      font-size: 11px;
+    }
+
+
+    /* =====================================
+       08. PROMPT CARD FOUNDATION
+    ===================================== */
+
+    .prompt-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: 22px;
+      min-height: 260px;
+    }
+
+    .prompt-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .prompt-card h3 {
+      font-family: var(--font-heading);
+      font-size: 18px;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .prompt-card p {
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .prompt-card-actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: auto;
+      padding-top: 20px;
+    }
+
+
+    /* =====================================
+       09. GRID SYSTEM
+    ===================================== */
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 22px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 22px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 20px;
+    }
+
+
+    /* =====================================
+       10. ANNOUNCEMENT BAR FOUNDATION
+    ===================================== */
+
+    .announcement-bar {
+      width: 100%;
+      min-height: 36px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+
+      padding: 7px 40px;
+
+      background: var(--gradient-main);
+      color: white;
+
+      font-size: 12px;
+      font-weight: 600;
+
+      position: relative;
+    }
+
+    .announcement-close {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+
+      border: none;
+      background: transparent;
+      color: white;
+    }
+
+
+    /* =====================================
+       11. NAVIGATION FOUNDATION
+    ===================================== */
+
+    .main-header {
+      width: 100%;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      background: rgba(8,11,22,0.86);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar {
+      min-height: 76px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+
+      font-family: var(--font-heading);
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .brand-symbol {
+      width: 36px;
+      height: 36px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 11px;
+      background: var(--gradient-main);
+
+      color: white;
+      font-size: 18px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: white;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+
+    /* =====================================
+       12. HERO FOUNDATION
+    ===================================== */
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 110px 0 95px;
+      text-align: center;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      filter: blur(110px);
+      opacity: 0.18;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      background: #8b5cf6;
+      top: 0;
+      left: -150px;
+    }
+
+    .hero::after {
+      background: #2563eb;
+      bottom: 0;
+      right: -150px;
+    }
+
+    .hero h1 {
+      max-width: 850px;
+      margin: 0 auto;
+
+      font-family: var(--font-heading);
+      font-size: clamp(38px, 7vw, 76px);
+      font-weight: 700;
+
+      line-height: 1.08;
+      letter-spacing: -3px;
+    }
+
+    .hero-description {
+      max-width: 620px;
+      margin: 22px auto 30px;
+
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .hero-search {
+      max-width: 650px;
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      padding: 7px;
+
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+
+      box-shadow: 0 15px 50px rgba(0,0,0,0.22);
+    }
+
+    .hero-search input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 12px;
+    }
+
+
+    /* =====================================
+       13. CATEGORY FOUNDATION
+    ===================================== */
+
+    .category-card {
+      padding: 25px;
+      min-height: 180px;
+    }
+
+    .category-icon {
+      width: 48px;
+      height: 48px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 14px;
+      margin-bottom: 20px;
+
+      background: rgba(139,92,246,0.14);
+      color: var(--primary-light);
+
+      font-size: 20px;
+    }
+
+    .category-card h3 {
+      font-family: var(--font-heading);
+      font-size: 17px;
+      margin-bottom: 7px;
+    }
+
+    .category-card p {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+
+    /* =====================================
+       14. PLAYGROUND FOUNDATION
+    ===================================== */
+
+    .playground-panel {
+      padding: 28px;
+    }
+
+    .playground-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .editor-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+
+    /* =====================================
+       15. MODAL FOUNDATION
+    ===================================== */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      width: min(100%, 650px);
+      max-height: 85vh;
+      overflow-y: auto;
+
+      padding: 28px;
+
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+
+      box-shadow: var(--shadow-card);
+    }
+
+
+    /* =====================================
+       16. TOAST NOTIFICATIONS
+    ===================================== */
+
+    .toast {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 3000;
+
+      max-width: calc(100% - 40px);
+
+      padding: 13px 20px;
+
+      border: 1px solid var(--border);
+      border-radius: 12px;
+
+      background: #17213a;
+      color: white;
+
+      box-shadow: var(--shadow-card);
+
+      opacity: 0;
+      transform: translateY(15px);
+      pointer-events: none;
+
+      transition: var(--transition);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
+    /* =====================================
+       17. FOOTER FOUNDATION
+    ===================================== */
+
+    .main-footer {
+      padding: 65px 0 25px;
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.15);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 35px;
+    }
+
+    .footer-heading {
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      margin-top: 45px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+
+    /* =====================================
+       18. ACCESSIBILITY
+    ===================================== */
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible {
+      outline: 2px solid var(--primary-light);
+      outline-offset: 3px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+
+    /* =====================================
+       19. RESPONSIVE — TABLET
+    ===================================== */
+
+    @media (max-width: 1024px) {
+
+      .grid-4 {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+
+      .nav-links {
+        gap: 15px;
+      }
+
+      .footer-grid {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+    }
+
+
+    /* =====================================
+       20. RESPONSIVE — MOBILE
+    ===================================== */
+
+    @media (max-width: 768px) {
+
+      .container {
+        width: min(calc(100% - 30px), var(--container));
+      }
+
+      .section {
+        padding: 60px 0;
+      }
+
+      .section-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .navbar {
+        min-height: 66px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: inline-grid;
+      }
+
+      .nav-actions .btn-secondary {
+        display: none;
+      }
+
+      .hero {
+        padding: 80px 0 65px;
+      }
+
+      .hero h1 {
+        letter-spacing: -1.7px;
+      }
+
+      .hero-description {
+        font-size: 14px;
+      }
+
+      .grid-2,
+      .grid-3,
+      .grid-4 {
+        grid-template-columns: 1fr;
+      }
+
+      .playground-panel {
+        padding: 18px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+      }
+
+    }
+
+
+    /* =====================================
+       21. SMALL MOBILE
+    ===================================== */
+
+    @media (max-width: 480px) {
+
+      .announcement-bar {
+        font-size: 10px;
+        padding-inline: 30px;
+        text-align: center;
+      }
+
+      .brand {
+        font-size: 20px;
+      }
+
+      .brand-symbol {
+        width: 32px;
+        height: 32px;
+      }
+
+      .hero-search {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-search .btn {
+        width: 100%;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-content {
+        padding: 20px;
+      }
+
+      .toast {
+        left: 15px;
+        right: 15px;
+        bottom: 15px;
+        text-align: center;
+      }
+
+    }
+
+
+    /* =====================================
+       22. REDUCED MOTION
+    ===================================== */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<!-- ==========================================
+     PART 2 — COMPLETE HOMEPAGE HTML
+========================================== -->
+
+
+<!-- ==========================================
+     01. ANNOUNCEMENT BAR
+========================================== -->
+
+<div class="announcement-bar" id="announcementBar">
+
+  <span>
+    <i class="fa-solid fa-sparkles"></i>
+    Discover better AI prompts. Create better results.
+  </span>
+
+  <button
+    class="announcement-close"
+    id="closeAnnouncement"
+    aria-label="Close announcement">
+
+    <i class="fa-solid fa-xmark"></i>
+
+  </button>
+
+</div>
+
+
+<!-- ==========================================
+     02. HEADER & NAVIGATION
+========================================== -->
+
+<header class="main-header">
+
+  <div class="container navbar">
+
+    <!-- Brand -->
+
+    <a href="#home" class="brand" aria-label="PROMPT homepage">
+
+      <span class="brand-symbol">
+        P
+      </span>
+
+      <span>
+        PROMPT<span class="gradient-text">.</span>
+      </span>
+
+    </a>
+
+
+    <!-- Desktop Navigation -->
+
+    <nav class="nav-links" aria-label="Main navigation">
+
+      <a href="#home" class="active">Home</a>
+
+      <a href="#library">Explore</a>
+
+      <a href="#categories">Categories</a>
+
+      <a href="#playground">Playground</a>
+
+      <a href="#how-it-works">How It Works</a>
+
+    </nav>
+
+
+    <!-- Header Actions -->
+
+    <div class="nav-actions">
+
+      <input
+        type="search"
+        class="input-field"
+        id="topSearch"
+        placeholder="Search prompts..."
+        aria-label="Search prompts"
+        style="width:190px;min-height:42px;padding:9px 12px;">
+
+      <button
+        class="btn btn-secondary"
+        id="favoritesShortcut"
+        aria-label="Open favorites">
+
+        <i class="fa-regular fa-heart"></i>
+
+      </button>
+
+      <button
+        class="btn btn-secondary"
+        data-demo>
+
+        Sign In
+
+      </button>
+
+      <button
+        class="btn-icon menu-toggle"
+        id="menuToggle"
+        aria-label="Open mobile menu"
+        aria-expanded="false">
+
+        <i class="fa-solid fa-bars"></i>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- ==========================================
+     MOBILE SIDEBAR
+========================================== -->
+
+<div id="mobileOverlay"
+     aria-hidden="true"
+     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1100;">
+
+</div>
+
+
+<aside id="sidebar"
+       aria-label="Mobile navigation"
+       style="display:none;position:fixed;top:0;left:0;width:min(85%,320px);height:100vh;background:#10172a;border-right:1px solid rgba(255,255,255,.1);padding:25px;z-index:1200;overflow-y:auto;">
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:35px;">
+
+    <a href="#home" class="brand">
+
+      <span class="brand-symbol">P</span>
+
+      PROMPT.
+
+    </a>
+
+    <button
+      class="btn-icon"
+      onclick="document.getElementById('menuToggle').click()"
+      aria-label="Close navigation">
+
+      <i class="fa-solid fa-xmark"></i>
+
+    </button>
+
+  </div>
+
+
+  <nav style="display:grid;gap:20px;">
+
+    <a href="#home">
+      <i class="fa-solid fa-house"></i>
+      &nbsp; Home
+    </a>
+
+    <a href="#library">
+      <i class="fa-solid fa-compass"></i>
+      &nbsp; Explore Prompts
+    </a>
+
+    <a href="#categories">
+      <i class="fa-solid fa-layer-group"></i>
+      &nbsp; Categories
+    </a>
+
+    <a href="#playground">
+      <i class="fa-solid fa-wand-magic-sparkles"></i>
+      &nbsp; Playground
+    </a>
+
+    <a href="#comparisonStudio">
+      <i class="fa-solid fa-scale-balanced"></i>
+      &nbsp; Compare Prompts
+    </a>
+
+    <a href="#favorites">
+      <i class="fa-regular fa-heart"></i>
+      &nbsp; Favorites
+    </a>
+
+    <a href="#how-it-works">
+      <i class="fa-solid fa-circle-info"></i>
+      &nbsp; How It Works
+    </a>
+
+  </nav>
+
+</aside>
+
+
+<main id="home">
+
+
+<!-- ==========================================
+     03. HERO SECTION
+========================================== -->
+
+<section class="hero">
+
+  <div class="container">
+
+    <span class="eyebrow">
+
+      <i class="fa-solid fa-sparkles"></i>
+
+      THE AI PROMPT LIBRARY
+
+    </span>
+
+
+    <h1>
+
+      Find the Perfect Prompt.
+      <span class="gradient-text">
+        Unlock Your Potential.
+      </span>
+
+    </h1>
+
+
+    <p class="hero-description">
+
+      Discover powerful AI prompts, customize your ideas
+      and turn better instructions into better results.
+
+    </p>
+
+
+    <!-- Hero Search -->
+
+    <div class="hero-search">
+
+      <i class="fa-solid fa-magnifying-glass"
+         style="color:var(--text-muted);padding-left:12px;">
+      </i>
+
+      <input
+        type="search"
+        id="heroSearch"
+        placeholder="Search thousands of AI prompts..."
+        aria-label="Search AI prompts">
+
+      <button
+        class="btn btn-primary"
+        id="heroSearchButton">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        Search Prompts
+
+      </button>
+
+    </div>
+
+
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:24px;">
+
+      <a href="#library" class="btn btn-primary">
+
+        Explore Library
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+      </a>
+
+      <a href="#playground" class="btn btn-secondary">
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        Customize Prompt
+
+      </a>
+
+    </div>
+
+
+    <div style="display:flex;justify-content:center;gap:25px;flex-wrap:wrap;margin-top:35px;color:var(--text-secondary);font-size:12px;">
+
+      <span>
+        <i class="fa-solid fa-check" style="color:#34d399;"></i>
+        Easy to use
+      </span>
+
+      <span>
+        <i class="fa-solid fa-check" style="color:#34d399;"></i>
+        Free to explore
+      </span>
+
+      <span>
+        <i class="fa-solid fa-check" style="color:#34d399;"></i>
+        Customizable prompts
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ==========================================
+     04. TRENDING PROMPTS
+========================================== -->
+
+<section class="section" id="trending">
+
+  <div class="container">
+
+    <div class="section-header">
+
+      <div>
+
+        <span class="eyebrow">
+          <i class="fa-solid fa-fire"></i>
+          TRENDING NOW
+        </span>
+
+        <h2 class="section-title">
+          Popular <span class="gradient-text">Prompts</span>
+        </h2>
+
+        <p class="section-description">
+          Explore useful prompts that help you work smarter
+          and create better results.
+        </p>
+
+      </div>
+
+      <a href="#library" class="btn btn-secondary">
+
+        Explore All
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+      </a>
+
+    </div>
+
+
+    <div class="grid-3" id="trendingGrid">
+
+      <!-- JavaScript will render trending prompts here -->
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ==========================================
+     05. PROMPT OF THE DAY
+========================================== -->
+
+<section class="section" id="dailyPromptSection">
+
+  <div class="container">
+
+    <div class="glass-panel"
+         style="padding:35px;position:relative;overflow:hidden;">
+
+      <div style="position:relative;z-index:1;">
+
+        <span class="eyebrow">
+
+          <i class="fa-solid fa-star"></i>
+
+          DAILY DISCOVERY
+
+        </span>
+
+        <h2 class="section-title">
+
+          Prompt of the <span class="gradient-text">Day</span>
+
+        </h2>
+
+        <p class="section-description">
+          A fresh prompt to inspire your next great idea.
+        </p>
+
+
+        <div id="dailyPromptContent" style="margin-top:25px;">
+
+          <div class="card" style="padding:22px;">
+
+            <p style="color:var(--text-secondary);">
+              Your daily prompt will appear here.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="btn btn-primary"
+          id="dailyOpen"
+          style="margin-top:22px;">
+
+          Explore Today's Prompt
+
+          <i class="fa-solid fa-arrow-right"></i>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ==========================================
+     06. EXPLORE CATEGORIES
+========================================== -->
+
+<section class="section" id="categories">
+
+  <div class="container">
+
+    <div class="section-header">
+
+      <div>
+
+        <span class="eyebrow">
+          EXPLORE BY INTEREST
+        </span>
+
+        <h2 class="section-title">
+
+          Explore <span class="gradient-text">Categories</span>
+
+        </h2>
+
+        <p class="section-description">
+
+          Find the right prompts for your goals,
+          interests and creative projects.
+
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="grid-3" id="categoryGrid">
+
+      <!-- Category cards will be rendered by JavaScript -->
+
+      <button class="card category-card"
+              data-category="Educational & Learning">
+
+        <div class="category-icon">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+
+        <h3>Educational & Learning</h3>
+
+        <p>Learn new subjects and understand difficult concepts.</p>
+
+        <span class="tag" style="margin-top:15px;">50 Prompts</span>
+
+      </button>
+
+
+      <button class="card category-card"
+              data-category="Content Creation">
+
+        <div class="category-icon">
+          <i class="fa-solid fa-pen-nib"></i>
+        </div>
+
+        <h3>Content Creation</h3>
+
+        <p>Create content ideas, scripts and social media posts.</p>
+
+        <span class="tag" style="margin-top:15px;">50 Prompts</span>
+
+      </button>
+
+
+      <button class="card category-card"
+              data-category="Design & Creativity">
+
+        <div class="category-icon">
+          <i class="fa-solid fa-palette"></i>
+        </div>
+
+        <h3>Design & Creativity</h3>
+
+        <p>Explore creative ideas and visual design concepts.</p>
+
+        <span class="tag" style="margin-top:15px;">50 Prompts</span>
+
+      </button>
+
+
+      <button class="card category-card"
+              data-category="Productivity & Career">
+
+        <div class="category-icon">
+          <i class="fa-solid fa-briefcase"></i>
+        </div>
+
+        <h3>Productivity & Career</h3>
+
+        <p>Improve workflows, planning and professional skills.</p>
+
+        <span class="tag" style="margin-top:15px;">50 Prompts</span>
+
+      </button>
+
+
+      <button class="card category-card"
+              data-category="Personal Growth">
+
+        <div class="category-icon">
+          <i class="fa-solid fa-seedling"></i>
+        </div>
+
+        <h3>Personal Growth</h3>
+
+        <p>Build better habits and develop useful life skills.</p>
+
+        <span class="tag" style="margin-top:15px;">50 Prompts</span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ==========================================
+     07. PROMPT PLAYGROUND
+========================================== -->
+
+<section class="section" id="playground">
+
+  <div class="container">
+
+    <div class="section-header">
+
+      <div>
+
+        <span class="eyebrow">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          CREATIVE WORKSPACE
+        </span>
+
+        <h2 class="section-title">
+
+          Prompt <span class="gradient-text">Playground</span>
+
+        </h2>
+
+        <p class="section-description">
+
+          Edit your prompt, personalize its instructions
+          and prepare it for your AI workflow.
+
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="glass-panel playground-panel">
+
+      <div class="playground-toolbar">
+
+        <h3 style="font-family:var(--font-heading);">
+
+          <i class="fa-solid fa-code" style="color:var(--primary-light);"></i>
+
+          Prompt Editor
+
+        </h3>
+
+        <span class="badge">
+          <i class="fa-solid fa-pen"></i>
+          Editable
+        </span>
+
+      </div>
+
+
+      <div class="grid-2">
+
+        <!-- Input Editor -->
+
+        <div>
+
+          <label class="editor-label" for="playgroundInput">
+
+            Your Original Prompt
+
+          </label>
+
+          <textarea
+            class="input-field"
+            id="playgroundInput"
+            placeholder="Write or paste your prompt here...
+
+Example:
+
+Act as a [ROLE].
+Help me create [TASK].
+My target audience is [AUDIENCE].
+Use a [TONE] tone.
+Format the answer as [FORMAT].">
+          </textarea>
+
+
+          <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:15px;">
+
+            <button
+              class="btn btn-primary"
+              id="customizeButton">
+
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+              Prepare Prompt
+
+            </button>
+
+            <button
+              class="btn btn-secondary"
+              id="clearPlayground">
+
+              <i class="fa-solid fa-rotate-left"></i>
+
+              Reset
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- Output Editor -->
+
+        <div>
+
+          <label class="editor-label" for="playgroundOutput">
+
+            Customized Prompt Preview
+
+          </label>
+
+          <textarea
+            class="input-field"
+            id="playgroundOutput"
+            placeholder="Your prepared prompt will appear here...">
+          </textarea>
+
+
+          <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:15px;">
+
+            <button
+              class="btn btn-primary"
+              id="copyPlayground">
+
+              <i class="fa-regular fa-copy"></i>
+
+              Copy Output
+
+            </button>
+
+            <button
+              class="btn btn-secondary"
+              id="saveDraft">
+
+              <i class="fa-regular fa-floppy-disk"></i>
+
+              Save Draft
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <p style="font-size:12px;color:var(--text-muted);margin-top:20px;">
+
+        <i class="fa-solid fa-circle-info"></i>
+
+        This workspace prepares your prompt using your own edits.
+        AI-powered rewriting will require a future AI integration.
+
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ==========================================
+     08. PROMPT COMPARISON STUDIO
+========================================== -->
+
+<section class="section" id="comparisonStudio">
+
+  <div class="container">
+
+    <div class="section-header">
+
+      <div>
+
+        <span class="eyebrow">
+          <i class="fa-solid fa-scale-balanced"></i>
+          ANALYZE & COMPARE
+        </span>
+
+        <h2 class="section-title">
+
+          Prompt <span class="gradient-text">Comparison Studio</span>
+
+        </h2>
+
+        <p class="section-description">
+
+          Compare two prompts and examine their structure
+          to understand how their instructions differ.
+
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="glass-panel playground-panel">
+
+      <div class="grid-2">
+
+        <div>
+
+          <label class="editor-label" for="comparePromptOne">
+
+            Prompt A
+
+          </label>
+
+          <textarea
+            class="input-field"
+            id="comparePromptOne"
+            placeholder="Paste your first prompt here...">
+          </textarea>
+
+        </div>
+
+
+        <div>
+
+          <label class="editor-label" for="comparePromptTwo">
+
+            Prompt B
+
+          </label>
+
+          <textarea
+            class="input-field"
+            id="comparePromptTwo"
+            placeholder="Paste your second prompt here...">
+          </textarea>
+
+        </div>
+
+      </div>
+
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;">
+
+        <button
+          class="btn btn-primary"
+          id="compareButton">
+
+          <i class="fa-solid fa-scale-balanced"></i>
+
+          Compare Prompts
+
+        </button>
+
+        <button
+          class="btn btn-secondary"
+          id="clearCompare">
+
+          Clear Comparison
+
+        </button>
+
+      </div>
+
+
+      <div id="comparisonResult" style="margin-top:25px;">
+
+      </div>
+
+
+      <p style="color:var(--text-muted);font-size:12px;margin-top:15px;">
+
+        Comparison uses basic structural indicators.
+        It does not represent an AI-generated quality score.
+
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ==========================================
+     09. HOW IT WORKS
+========================================== -->
+
+<section class="section" id="how-it-works">
+
+  <div class="container">
+
+    <div style="text-align:center;margin-bottom:40px;">
+
+      <span class="eyebrow">
+        SIMPLE WORKFLOW
+      </span>
+
+      <h2 class="section-title">
+
+        How <span class="gradient-text">PROMPT Works</span>
+
+      </h2>
+
+      <p class="section-description" style="margin-inline:auto;">
+
+        Three simple steps to discover and use better prompts.
+
+      </p>
+
+    </div>
+
+
+    <div class="grid-3">
+
+
+      <div class="card" style="padding:30px;text-align:center;">
+
+        <div class="category-icon" style="margin-inline:auto;">
+
+          <i class="fa-solid fa-magnifying-glass"></i>
+
+        </div>
+
+        <span class="badge">STEP 01</span>
+
+        <h3 style="margin-top:15px;font-family:var(--font-heading);">
+
+          Discover
+
+        </h3>
+
+        <p style="color:var(--text-secondary);font-size:13px;margin-top:10px;">
+
+          Explore categories and find the prompt that matches your needs.
+
+        </p>
+
+      </div>
+
+
+      <div class="card" style="padding:30px;text-align:center;">
+
+        <div class="category-icon" style="margin-inline:auto;">
+
+          <i class="fa-solid fa-sliders"></i>
+
+        </div>
+
+        <span class="badge">STEP 02</span>
+
+        <h3 style="margin-top:15px;font-family:var(--font-heading);">
+
+          Customize
+
+        </h3>
+
+        <p style="color:var(--text-secondary);font-size:13px;margin-top:10px;">
+
+          Personalize instructions, audience, tone and output format.
+
+        </p>
+
+      </div>
+
+
+      <div class="card" style="padding:30px;text-align:center;">
+
+        <div class="category-icon" style="margin-inline:auto;">
+
+          <i class="fa-solid fa-copy"></i>
+
+        </div>
+
+        <span class="badge">STEP 03</span>
+
+        <h3 style="margin-top:15px;font-family:var(--font-heading);">
+
+          Copy & Use
+
+        </h3>
+
+        <p style="color:var(--text-secondary);font-size:13px;margin-top:10px;">
+
+          Copy your prepared prompt and use it in your preferred AI tool.
+
+        </p>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ==========================================
+     10. WHY CHOOSE PROMPT
+========================================== -->
+
+<section class="section" id="why-prompt">
+
+  <div class="container">
+
+    <div class="section-header">
+
+      <div>
+
+        <span class="eyebrow">
+          BUILT FOR BETTER IDEAS
+        </span>
+
+        <h2 class="section-title">
+
+          Why Choose <span class="gradient-text">PROMPT?</span>
+
+        </h2>
+
+        <p class="section-description">
+
+          A simple and organized workspace for discovering
+          and managing AI prompts.
+
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="grid-4">
+
+
+      <div class="card" style="padding:22px;">
+
+        <div class="category-icon">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+
+        <h3>Organized Library</h3>
+
+        <p style="color:var(--text-secondary);font-size:13px;margin-top:8px;">
+
+          Find prompts through structured categories.
+
+        </p>
+
+      </div>
+
+
+      <div class="card" style="padding:22px;">
+
+        <div class="category-icon">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+
+        <h3>Quick Access</h3>
+
+        <p style="color:var(--text-secondary);font-size:13px;margin-top:8px;">
+
+          Search and copy prompts without unnecessary steps.
+
+        </p>
+
+      </div>
+
+
+      <div class="card" style="padding:22px;">
+
+        <div class="category-icon">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </div>
+
+        <h3>Customization</h3>
+
+        <p style="color:var(--text-secondary);font-size:13px;margin-top:8px;">
+
+          Edit instructions to match your requirements.
+
+        </p>
+
+      </div>
+
+
+      <div class="card" style="padding:22px;">
+
+        <div class="category-icon">
+          <i class="fa-solid fa-heart"></i>
+        </div>
+
+        <h3>Personal Favorites</h3>
+
+        <p style="color:var(--text-secondary);font-size:13px;margin-top:8px;">
+
+          Keep useful prompts in your personal collection.
+
+        </p>
+
+      </div>
+
+
+      <div class="card" style="padding:22px;">
+
+        <div class="category-icon">
+          <i class="fa-solid fa-mobile-screen"></i>
+        </div>
+
+        <h3>Mobile Friendly</h3>
+
+        <p style="color:var(--text-secondary);font-size:13px;margin-top:8px;">
+
+          Use the platform across different screen sizes.
+
+        </p>
+
+      </div>
+
+
+      <div class="card" style="padding:22px;">
+
+        <div class="category-icon">
+          <i class="fa-solid fa-filter"></i>
+        </div>
+
+        <h3>Smart Filters</h3>
+
+        <p style="color:var(--text-secondary);font-size:13px;margin-top:8px;">
+
+          Narrow your discovery with useful filters.
+
+        </p>
+
+      </div>
+
+
+      <div class="card" style="padding:22px;">
+
+        <div class="category-icon">
+          <i class="fa-solid fa-floppy-disk"></i>
+        </div>
+
+        <h3>Save Your Work</h3>
+
+        <p style="color:var(--text-secondary);font-size:13px;margin-top:8px;">
+
+          Keep your drafts and favorites on your device.
+
+        </p>
+
+      </div>
+
+
+      <div class="card" style="padding:22px;">
+
+        <div class="category-icon">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+
+        <h3>Creative Workspace</h3>
+
+        <p style="color:var(--text-secondary);font-size:13px;margin-top:8px;">
+
+          Customize and compare prompt structures.
+
+        </p>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ==========================================
+     11. PROMPT LIBRARY & FAVORITES
+========================================== -->
+
+<section class="section" id="library">
+
+  <div class="container">
+
+    <div class="section-header">
+
+      <div>
+
+        <span class="eyebrow">
+          EXPLORE THE COLLECTION
+        </span>
+
+        <h2 class="section-title">
+
+          Discover Your Next
+          <span class="gradient-text">Great Prompt</span>
+
+        </h2>
+
+        <p class="section-description">
+
+          Browse prompts, apply filters and find the right
+          instructions for your next project.
+
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- Library Filters -->
+
+    <div class="glass-panel"
+         style="padding:20px;margin-bottom:25px;">
+
+      <div class="grid-4">
+
+        <div>
+
+          <label class="editor-label" for="librarySearch">
+            Search Library
+          </label>
+
+          <input
+            class="input-field"
+            type="search"
+            id="librarySearch"
+            placeholder="Search prompts...">
+
+        </div>
+
+
+        <div>
+
+          <label class="editor-label" for="categoryFilter">
+            Category
+          </label>
+
+          <select class="input-field" id="categoryFilter">
+
+            <option value="">All Categories</option>
+
+            <option value="Educational & Learning">
+              Educational & Learning
+            </option>
+
+            <option value="Content Creation">
+              Content Creation
+            </option>
+
+            <option value="Design & Creativity">
+              Design & Creativity
+            </option>
+
+            <option value="Productivity & Career">
+              Productivity & Career
+            </option>
+
+            <option value="Personal Growth">
+              Personal Growth
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div>
+
+          <label class="editor-label" for="levelFilter">
+            Difficulty
+          </label>
+
+          <select class="input-field" id="levelFilter">
+
+            <option value="">All Levels</option>
+
+            <option value="Beginner">Beginner</option>
+
+            <option value="Intermediate">Intermediate</option>
+
+            <option value="Advanced">Advanced</option>
+
+          </select>
+
+        </div>
+
+
+        <div>
+
+          <label class="editor-label" for="sortFilter">
+            Sort By
+          </label>
+
+          <select class="input-field" id="sortFilter">
+
+            <option value="popular">Popular</option>
+
+            <option value="newest">Newest</option>
+
+            <option value="alphabetical">A to Z</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Library Results -->
+
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+
+      <h3 style="font-family:var(--font-heading);">
+
+        All Prompts
+
+      </h3>
+
+      <span
+        id="promptCount"
+        style="color:var(--text-secondary);font-size:13px;">
+
+        Explore the collection
+
+      </span>
+
+    </div>
+
+
+    <div class="grid-3" id="promptGrid">
+
+      <!-- Prompt database will render cards here -->
+
+    </div>
+
+
+    <div style="text-align:center;margin-top:35px;">
+
+      <button
+        class="btn btn-secondary"
+        id="loadMore">
+
+        Load More Prompts
+
+        <i class="fa-solid fa-arrow-down"></i>
+
+      </button>
+
+    </div>
+
+
+    <!-- Favorites Collection -->
+
+    <div id="favorites" style="margin-top:75px;">
+
+      <div class="section-header">
+
+        <div>
+
+          <span class="eyebrow">
+            YOUR COLLECTION
+          </span>
+
+          <h2 class="section-title">
+
+            Your <span class="gradient-text">Favorites</span>
+
+          </h2>
+
+          <p class="section-description">
+
+            Your saved prompts, available in one place.
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="grid-3" id="favoritesGrid">
+
+        <div class="card" style="padding:25px;">
+
+          <p style="color:var(--text-secondary);">
+
+            Your favorite prompts will appear here.
+
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Latest Prompts -->
+
+    <div id="latest" style="margin-top:75px;">
+
+      <div class="section-header">
+
+        <div>
+
+          <span class="eyebrow">
+            FRESH DISCOVERIES
+          </span>
+
+          <h2 class="section-title">
+
+            Latest <span class="gradient-text">Prompts</span>
+
+          </h2>
+
+          <p class="section-description">
+
+            Explore more ideas from our prompt collection.
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="grid-3" id="latestGrid">
+
+        <!-- Latest prompts rendered by JavaScript -->
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ==========================================
+     12. FINAL CTA
+========================================== -->
+
+<section class="section" id="finalCTA">
+
+  <div class="container">
+
+    <div class="glass-panel"
+         style="padding:55px 25px;text-align:center;background:linear-gradient(135deg,rgba(139,92,246,.16),rgba(59,130,246,.13));">
+
+      <span class="eyebrow">
+
+        <i class="fa-solid fa-rocket"></i>
+
+        START CREATING
+
+      </span>
+
+
+      <h2 class="section-title"
+          style="max-width:750px;margin:0 auto;">
+
+        Better Prompts.
+        <span class="gradient-text">
+          Better Possibilities.
+        </span>
+
+      </h2>
+
+
+      <p class="section-description"
+         style="margin:18px auto 25px;">
+
+        Discover new ideas, customize your prompts
+        and make your AI workflow more effective.
+
+      </p>
+
+
+      <a href="#library" class="btn btn-primary">
+
+        Explore Prompt Library
+
+        <i class="fa-solid fa-arrow-right"></i>
+
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+</main>
+
+
+<!-- ==========================================
+     13. FOOTER
+========================================== -->
+
+<footer class="main-footer">
+
+  <div class="container">
+
+    <div class="footer-grid">
+
+
+      <!-- Footer Brand -->
+
+      <div>
+
+        <a href="#home" class="brand">
+
+          <span class="brand-symbol">P</span>
+
+          PROMPT.
+
+        </a>
+
+
+        <p style="color:var(--text-secondary);font-size:13px;margin-top:18px;max-width:280px;">
+
+          A creative space to discover, customize
+          and explore powerful AI prompts.
+
+        </p>
+
+
+        <div style="display:flex;gap:12px;margin-top:20px;">
+
+          <a href="#"
+             class="btn-icon"
+             aria-label="Instagram"
+             data-demo>
+
+            <i class="fa-brands fa-instagram"></i>
+
+          </a>
+
+          <a href="#"
+             class="btn-icon"
+             aria-label="X"
+             data-demo>
+
+            <i class="fa-brands fa-x-twitter"></i>
+
+          </a>
+
+          <a href="#"
+             class="btn-icon"
+             aria-label="LinkedIn"
+             data-demo>
+
+            <i class="fa-brands fa-linkedin-in"></i>
+
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <!-- Explore -->
+
+      <div>
+
+        <h4 class="footer-heading">
+          Explore
+        </h4>
+
+        <div class="footer-links">
+
+          <a href="#library">Prompt Library</a>
+
+          <a href="#trending">Trending Prompts</a>
+
+          <a href="#categories">Categories</a>
+
+          <a href="#dailyPromptSection">Daily Prompt</a>
+
+        </div>
+
+      </div>
+
+
+      <!-- Workspace -->
+
+      <div>
+
+        <h4 class="footer-heading">
+          Workspace
+        </h4>
+
+        <div class="footer-links">
+
+          <a href="#playground">Prompt Playground</a>
+
+          <a href="#comparisonStudio">Compare Prompts</a>
+
+          <a href="#favorites">Favorites</a>
+
+          <a href="#how-it-works">How It Works</a>
+
+        </div>
+
+      </div>
+
+
+      <!-- Information -->
+
+      <div>
+
+        <h4 class="footer-heading">
+          Information
+        </h4>
+
+        <div class="footer-links">
+
+          <a href="#why-prompt">About PROMPT</a>
+
+          <a href="#" data-demo>Privacy Policy</a>
+
+          <a href="#" data-demo>Terms of Use</a>
+
+          <a href="#" data-demo>Contact</a>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+      <span>
+
+        © <span id="currentYear">2026</span> PROMPT.
+        All rights reserved.
+
+      </span>
+
+      <span>
+
+        Built for better ideas.
+
+      </span>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+<!-- ==========================================
+     PROMPT DETAILS MODAL
+========================================== -->
+
+<div class="modal-overlay"
+     id="promptModal"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="modalTitle">
+
+  <div class="modal-content">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px;">
+
+      <h2 id="modalTitle"
+          style="font-family:var(--font-heading);font-size:22px;">
+
+        Prompt Details
+
+      </h2>
+
+
+      <button
+        class="btn-icon"
+        id="modalClose"
+        aria-label="Close prompt details">
+
+        <i class="fa-solid fa-xmark"></i>
+
+      </button>
+
+    </div>
+
+
+    <div id="modalBody">
+
+      <!-- Prompt details will be rendered here -->
+
+    </div>
+
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:25px;">
+
+      <button
+        class="btn btn-primary"
+        id="modalCopy">
+
+        <i class="fa-regular fa-copy"></i>
+
+        Copy Prompt
+
+      </button>
+
+
+      <button
+        class="btn btn-secondary"
+        id="modalFavorite">
+
+        <i class="fa-regular fa-heart"></i>
+
+        Favorite
+
+      </button>
+
+
+      <button
+        class="btn btn-secondary"
+        id="modalCustomize">
+
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        Customize
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ==========================================
+     TOAST NOTIFICATION
+========================================== -->
+
+<div class="toast"
+     id="toast"
+     role="status"
+     aria-live="polite">
+
+  Action completed.
+
+</div>
+
+<!-- ==========================================
+     BACK TO TOP
+========================================== -->
+
+<button
+  class="btn-icon"
+  id="backToTop"
+  aria-label="Back to top"
+  style="position:fixed;bottom:25px;left:25px;z-index:900;display:none;">
+
+  <i class="fa-solid fa-arrow-up"></i>
+
+</button>
+
+
+<!-- ==========================================
+     <!-- ==========================================
+     PART 3 — PROMPT DATABASE
+========================================== -->
+
+<script>
+
+/* ==========================================
+   01. GLOBAL APPLICATION DATA
+========================================== */
+
+const categories = [
+  {
+    id: "education",
+    name: "Educational & Learning",
+    icon: "fa-graduation-cap",
+    description: "Learn, understand and master new subjects."
+  },
+  {
+    id: "content",
+    name: "Content Creation",
+    icon: "fa-pen-nib",
+    description: "Create engaging content and creative stories."
+  },
+  {
+    id: "design",
+    name: "Design & Creativity",
+    icon: "fa-palette",
+    description: "Develop visual concepts and creative ideas."
+  },
+  {
+    id: "productivity",
+    name: "Productivity & Career",
+    icon: "fa-briefcase",
+    description: "Improve professional skills and workflows."
+  },
+  {
+    id: "growth",
+    name: "Personal Growth",
+    icon: "fa-seedling",
+    description: "Build habits and develop useful life skills."
+  }
+];
+
+
+/* ==========================================
+   02. PROMPT VARIATIONS
+   Each base prompt gets five useful formats.
+========================================== */
+
+const promptFormats = [
+  {
+    name: "Step-by-Step Guide",
+    instruction:
+      "Present the response as a clear step-by-step guide with practical explanations and examples."
+  },
+  {
+    name: "Practical Action Plan",
+    instruction:
+      "Create a practical action plan with priorities, timelines, resources and measurable outcomes."
+  },
+  {
+    name: "Beginner-Friendly Explanation",
+    instruction:
+      "Explain the subject in simple language, define important terms and include beginner-friendly examples."
+  },
+  {
+    name: "Checklist & Framework",
+    instruction:
+      "Organize the response into a structured checklist with key points, common mistakes and useful recommendations."
+  },
+  {
+    name: "Advanced Analysis",
+    instruction:
+      "Provide a detailed analysis, explain important considerations, identify limitations and suggest advanced improvements."
+  }
+];
+
+
+/* ==========================================
+   03. EDUCATIONAL & LEARNING PROMPTS
+========================================== */
+
+const educationSeeds = [
+
+  {
+    title: "Personalized Study Plan",
+    description: "Create a structured study timetable for a learning goal.",
+    prompt: "Act as an experienced academic study coach. Create a realistic study plan for [SUBJECT] over [TIME PERIOD]. Consider my current knowledge level [LEVEL], available study hours [HOURS] and target outcome [GOAL]. Include revision and practice sessions.",
+    level: "Beginner",
+    tags: ["study", "planning", "education"]
+  },
+
+  {
+    title: "Difficult Topic Simplifier",
+    description: "Understand a complex topic through simple explanations.",
+    prompt: "Act as an expert teacher. Explain [TOPIC] to a learner at [LEVEL]. Break it into smaller concepts, explain technical terms, use everyday examples and show how the ideas connect.",
+    level: "Beginner",
+    tags: ["learning", "explanation", "concepts"]
+  },
+
+  {
+    title: "Exam Preparation Coach",
+    description: "Prepare for an examination using focused practice.",
+    prompt: "Act as an examination preparation coach. Help me prepare for [EXAM] in [TIME PERIOD]. Identify important topics, create a revision strategy and suggest practice methods based on the syllabus [SYLLABUS].",
+    level: "Intermediate",
+    tags: ["exam", "revision", "preparation"]
+  },
+
+  {
+    title: "Interactive Quiz Generator",
+    description: "Generate questions to test understanding of a subject.",
+    prompt: "Create an interactive quiz about [TOPIC] for [LEVEL] learners. Include multiple-choice, short-answer and application-based questions. Ask one question at a time and explain each answer after I respond.",
+    level: "Beginner",
+    tags: ["quiz", "practice", "testing"]
+  },
+
+  {
+    title: "Language Learning Partner",
+    description: "Practice a new language through guided activities.",
+    prompt: "Act as a language learning tutor for [LANGUAGE]. My current level is [LEVEL]. Help me improve vocabulary, grammar, reading and conversation through short exercises and corrections.",
+    level: "Beginner",
+    tags: ["language", "grammar", "practice"]
+  },
+
+  {
+    title: "Chapter Summary Creator",
+    description: "Turn a chapter into organized revision notes.",
+    prompt: "Create comprehensive revision notes for [CHAPTER] from [SUBJECT]. Include key concepts, definitions, important examples, formulas where relevant and likely examination questions. Keep the notes accurate and well organized.",
+    level: "Intermediate",
+    tags: ["notes", "summary", "revision"]
+  },
+
+  {
+    title: "Mathematics Problem Tutor",
+    description: "Learn mathematical problem-solving step by step.",
+    prompt: "Act as a patient mathematics tutor. Help me solve [PROBLEM TYPE]. Explain the reasoning behind every step, identify the formula used and provide a similar practice question.",
+    level: "Intermediate",
+    tags: ["mathematics", "problem-solving", "practice"]
+  },
+
+  {
+    title: "Science Concept Explorer",
+    description: "Explore scientific concepts with examples and applications.",
+    prompt: "Teach me [SCIENCE TOPIC] at [LEVEL]. Explain the scientific principles, important terminology, real-world applications and common misconceptions. Suggest a simple way to remember the main ideas.",
+    level: "Intermediate",
+    tags: ["science", "concepts", "learning"]
+  },
+
+  {
+    title: "Research Project Assistant",
+    description: "Plan an educational research project.",
+    prompt: "Help me design an educational research project about [RESEARCH TOPIC]. Define the research question, objectives, scope, reliable source requirements, research method and a logical report structure.",
+    level: "Advanced",
+    tags: ["research", "project", "academic"]
+  },
+
+  {
+    title: "Critical Thinking Trainer",
+    description: "Develop analytical and logical thinking skills.",
+    prompt: "Act as a critical thinking instructor. Present a realistic problem about [TOPIC]. Help me examine assumptions, evaluate evidence, compare possible explanations and develop a reasoned conclusion.",
+    level: "Advanced",
+    tags: ["critical-thinking", "analysis", "reasoning"]
+  }
+
+];
+
+
+/* ==========================================
+   04. CONTENT CREATION PROMPTS
+========================================== */
+
+const contentSeeds = [
+
+  {
+    title: "Instagram Content Strategist",
+    description: "Plan engaging Instagram content for a target audience.",
+    prompt: "Act as a social media content strategist. Develop a content strategy for an Instagram account in [NICHE]. Consider my target audience [AUDIENCE], content style [STYLE] and goals [GOALS]. Suggest content pillars and a sustainable publishing schedule.",
+    level: "Intermediate",
+    tags: ["instagram", "strategy", "social-media"]
+  },
+
+  {
+    title: "YouTube Video Scriptwriter",
+    description: "Develop a structured script for a YouTube video.",
+    prompt: "Act as a professional YouTube scriptwriter. Write a script about [TOPIC] for [AUDIENCE]. Include an engaging opening, logical sections, examples, transitions and a natural conclusion.",
+    level: "Intermediate",
+    tags: ["youtube", "script", "video"]
+  },
+
+  {
+    title: "Reels Idea Generator",
+    description: "Generate short-form video concepts.",
+    prompt: "Generate original short-form video ideas for [NICHE]. My audience is [AUDIENCE] and my preferred style is [STYLE]. For each idea, suggest a hook, visual direction and key message.",
+    level: "Beginner",
+    tags: ["reels", "ideas", "short-form"]
+  },
+
+  {
+    title: "Social Media Caption Writer",
+    description: "Write meaningful captions for social platforms.",
+    prompt: "Write social media captions about [TOPIC] for [PLATFORM]. Use a [TONE] tone, make the opening engaging and include a relevant call to action. Avoid generic phrases.",
+    level: "Beginner",
+    tags: ["captions", "social-media", "writing"]
+  },
+
+  {
+    title: "Blog Article Architect",
+    description: "Build a complete blog article outline.",
+    prompt: "Act as an experienced blog editor. Create a detailed article outline about [TOPIC] for [AUDIENCE]. Include search intent, a compelling introduction, logical headings, useful examples and a conclusion.",
+    level: "Advanced",
+    tags: ["blogging", "writing", "outline"]
+  },
+
+  {
+    title: "Brand Story Creator",
+    description: "Develop an authentic brand story.",
+    prompt: "Help create a distinctive brand story for [BRAND]. Consider its mission [MISSION], audience [AUDIENCE], values [VALUES] and market position [POSITIONING]. Make the story authentic and memorable.",
+    level: "Advanced",
+    tags: ["branding", "storytelling", "business"]
+  },
+
+  {
+    title: "Podcast Episode Planner",
+    description: "Plan an informative and engaging podcast episode.",
+    prompt: "Act as a podcast producer. Plan an episode about [TOPIC] for [AUDIENCE]. Include the episode objective, opening, discussion segments, possible guest questions and closing summary.",
+    level: "Intermediate",
+    tags: ["podcast", "planning", "audio"]
+  },
+
+  {
+    title: "Email Newsletter Writer",
+    description: "Create a useful newsletter for subscribers.",
+    prompt: "Write an email newsletter for [AUDIENCE] about [TOPIC]. Include an interesting subject line, concise introduction, useful insights, clear sections and one relevant call to action.",
+    level: "Intermediate",
+    tags: ["newsletter", "email", "writing"]
+  },
+
+  {
+    title: "Content Repurposing Strategist",
+    description: "Transform one content idea into multiple formats.",
+    prompt: "Take my original content about [TOPIC] and develop a repurposing strategy for [PLATFORMS]. Suggest how to adapt it into videos, posts, carousels, newsletters and other suitable formats without repeating identical content.",
+    level: "Advanced",
+    tags: ["repurposing", "content", "strategy"]
+  },
+
+  {
+    title: "Creative Storytelling Assistant",
+    description: "Build an original story with a clear narrative.",
+    prompt: "Act as a creative storytelling editor. Help develop a story about [IDEA] in the [GENRE] genre. Create interesting characters, a central conflict, meaningful progression and a satisfying ending.",
+    level: "Intermediate",
+    tags: ["storytelling", "creative-writing", "ideas"]
+  }
+
+];
+
+
+/* ==========================================
+   05. DESIGN & CREATIVITY PROMPTS
+========================================== */
+
+const designSeeds = [
+
+  {
+    title: "Website UI/UX Designer",
+    description: "Plan a polished interface for a digital product.",
+    prompt: "Act as a senior UI/UX designer. Design a website concept for [PRODUCT]. Define the target users, visual direction, information architecture, navigation, important sections and responsive behavior.",
+    level: "Advanced",
+    tags: ["ui", "ux", "website"]
+  },
+
+  {
+    title: "Logo Concept Developer",
+    description: "Explore distinctive logo design directions.",
+    prompt: "Act as a brand identity designer. Develop five original logo directions for [BRAND]. Consider its personality [PERSONALITY], industry [INDUSTRY] and target audience [AUDIENCE]. Explain the concept, typography and visual symbolism.",
+    level: "Intermediate",
+    tags: ["logo", "branding", "identity"]
+  },
+
+  {
+    title: "Color Palette Architect",
+    description: "Create a consistent visual color system.",
+    prompt: "Create a professional color palette for [PROJECT]. Consider its personality [PERSONALITY] and audience [AUDIENCE]. Provide primary, secondary, accent, background and text colors with practical usage guidance.",
+    level: "Beginner",
+    tags: ["colors", "visual-design", "branding"]
+  },
+
+  {
+    title: "Mobile App Design Planner",
+    description: "Develop a user-friendly mobile application concept.",
+    prompt: "Act as a mobile product designer. Plan an application for [PURPOSE]. Define its main user journeys, core screens, navigation, interaction patterns and accessibility considerations.",
+    level: "Advanced",
+    tags: ["mobile", "app-design", "ux"]
+  },
+
+  {
+    title: "Typography Pairing Assistant",
+    description: "Select suitable font combinations for a design.",
+    prompt: "Recommend typography combinations for [PROJECT TYPE]. Consider readability, brand personality and platform requirements. Explain heading, body and supporting text roles, hierarchy and spacing.",
+    level: "Intermediate",
+    tags: ["typography", "fonts", "design"]
+  },
+
+  {
+    title: "Creative Campaign Concept",
+    description: "Develop a creative visual campaign direction.",
+    prompt: "Develop a creative campaign concept for [BRAND OR PRODUCT]. Define the central idea, visual message, audience, design language, campaign assets and platform adaptations.",
+    level: "Advanced",
+    tags: ["campaign", "creative", "marketing"]
+  },
+
+  {
+    title: "Interior Design Concept",
+    description: "Explore a functional interior design direction.",
+    prompt: "Act as an interior design concept consultant. Plan a design direction for [ROOM TYPE] with dimensions [DIMENSIONS], preferred style [STYLE] and budget [BUDGET]. Consider functionality, lighting, storage and visual harmony.",
+    level: "Intermediate",
+    tags: ["interior", "space", "design"]
+  },
+
+  {
+    title: "Presentation Design Planner",
+    description: "Create a professional presentation structure.",
+    prompt: "Plan a professional presentation about [TOPIC] for [AUDIENCE]. Define the narrative, slide sequence, key message per slide, visual elements and final takeaway.",
+    level: "Beginner",
+    tags: ["presentation", "slides", "visual"]
+  },
+
+  {
+    title: "Packaging Design Strategist",
+    description: "Develop packaging concepts for a product.",
+    prompt: "Develop packaging design directions for [PRODUCT]. Consider product positioning, materials, audience, shelf visibility, usability and sustainability. Explain how the packaging communicates the brand.",
+    level: "Advanced",
+    tags: ["packaging", "product-design", "branding"]
+  },
+
+  {
+    title: "Creative Brainstorming Partner",
+    description: "Generate and evaluate original creative concepts.",
+    prompt: "Act as a creative brainstorming partner. Generate original concepts for [CHALLENGE]. Explore different approaches, challenge obvious assumptions and organize the strongest ideas by originality and feasibility.",
+    level: "Intermediate",
+    tags: ["brainstorming", "ideas", "creativity"]
+  }
+
+];
+
+
+/* ==========================================
+   06. PRODUCTIVITY & CAREER PROMPTS
+========================================== */
+
+const productivitySeeds = [
+
+  {
+    title: "Daily Productivity Planner",
+    description: "Organize tasks around important daily priorities.",
+    prompt: "Act as a productivity coach. Help me plan a day around [TASKS], available time [HOURS] and priorities [PRIORITIES]. Include realistic time blocks, breaks and a simple review process.",
+    level: "Beginner",
+    tags: ["productivity", "planning", "time"]
+  },
+
+  {
+    title: "Project Management Assistant",
+    description: "Turn a project idea into an organized action plan.",
+    prompt: "Act as a project manager. Help organize [PROJECT]. Define its objectives, deliverables, milestones, responsibilities, dependencies, possible risks and progress tracking method.",
+    level: "Advanced",
+    tags: ["project", "management", "planning"]
+  },
+
+  {
+    title: "Professional Resume Reviewer",
+    description: "Improve the clarity and structure of a resume.",
+    prompt: "Act as a professional resume reviewer. Review my resume content for [ROLE]. Identify unclear descriptions, missing evidence, formatting improvements and ways to communicate relevant skills accurately.",
+    level: "Intermediate",
+    tags: ["resume", "career", "professional"]
+  },
+
+  {
+    title: "Interview Preparation Coach",
+    description: "Prepare for professional interview questions.",
+    prompt: "Act as an interview preparation coach for [ROLE]. Create relevant interview questions, explain what each question evaluates and help me develop honest, structured answers using my experience [EXPERIENCE].",
+    level: "Intermediate",
+    tags: ["interview", "career", "practice"]
+  },
+
+  {
+    title: "Business Idea Evaluator",
+    description: "Evaluate a business concept and its assumptions.",
+    prompt: "Act as a business strategy analyst. Evaluate my idea [IDEA] for [CUSTOMER GROUP]. Examine the problem, customer demand assumptions, possible alternatives, operating requirements and key validation experiments.",
+    level: "Advanced",
+    tags: ["business", "strategy", "analysis"]
+  },
+
+  {
+    title: "Meeting Agenda Creator",
+    description: "Prepare an organized meeting agenda.",
+    prompt: "Create a focused meeting agenda for [MEETING PURPOSE]. Include objectives, discussion topics, estimated durations, preparation requirements and expected decisions.",
+    level: "Beginner",
+    tags: ["meetings", "organization", "work"]
+  },
+
+  {
+    title: "Decision Making Framework",
+    description: "Compare options using a structured decision process.",
+    prompt: "Help me evaluate [DECISION]. Identify my options, important criteria, trade-offs, uncertainties and possible consequences. Present a balanced comparison without making unsupported assumptions.",
+    level: "Advanced",
+    tags: ["decision", "analysis", "planning"]
+  },
+
+  {
+    title: "Skill Development Roadmap",
+    description: "Create a roadmap for learning a professional skill.",
+    prompt: "Create a learning roadmap for [SKILL] over [TIME PERIOD]. Consider my current level [LEVEL], learning resources [RESOURCES] and target capability [GOAL]. Include practice projects and progress checks.",
+    level: "Intermediate",
+    tags: ["skills", "career", "learning"]
+  },
+
+  {
+    title: "Workflow Improvement Analyst",
+    description: "Find opportunities to improve a work process.",
+    prompt: "Act as a workflow improvement consultant. Analyze my current process [PROCESS]. Identify repetitive tasks, bottlenecks, dependencies and realistic opportunities for simplification or automation.",
+    level: "Advanced",
+    tags: ["workflow", "efficiency", "automation"]
+  },
+
+  {
+    title: "Professional Email Assistant",
+    description: "Draft clear and professional workplace emails.",
+    prompt: "Help me draft a professional email about [SUBJECT] to [RECIPIENT TYPE]. Use a [TONE] tone, communicate the purpose clearly and include the necessary context and next action.",
+    level: "Beginner",
+    tags: ["email", "communication", "work"]
+  }
+
+];
+
+
+/* ==========================================
+   07. PERSONAL GROWTH PROMPTS
+========================================== */
+
+const growthSeeds = [
+
+  {
+    title: "Personal Goal Planner",
+    description: "Turn a personal goal into realistic milestones.",
+    prompt: "Act as a personal development coach. Help me plan a goal related to [GOAL]. Consider my current situation [CONTEXT], available resources [RESOURCES] and preferred timeline [TIME]. Define practical milestones and review points.",
+    level: "Beginner",
+    tags: ["goals", "planning", "development"]
+  },
+
+  {
+    title: "Habit Building Guide",
+    description: "Develop a sustainable routine for a positive habit.",
+    prompt: "Help me develop a realistic habit related to [HABIT]. Identify a small starting action, useful environmental cues, possible obstacles and a simple way to track consistency.",
+    level: "Beginner",
+    tags: ["habits", "routine", "consistency"]
+  },
+
+  {
+    title: "Reflection Journal Assistant",
+    description: "Explore thoughts and experiences through reflection.",
+    prompt: "Act as a thoughtful journaling guide. Give me reflection questions about [TOPIC]. Help me examine what happened, what I learned, what I value and what practical next step I might consider.",
+    level: "Beginner",
+    tags: ["journaling", "reflection", "awareness"]
+  },
+
+  {
+    title: "Communication Skills Coach",
+    description: "Improve clarity and confidence in communication.",
+    prompt: "Act as a communication skills coach. Help me improve [COMMUNICATION SKILL]. Explain useful techniques, provide realistic practice scenarios and give constructive feedback on my responses.",
+    level: "Intermediate",
+    tags: ["communication", "confidence", "skills"]
+  },
+
+  {
+    title: "Creative Thinking Trainer",
+    description: "Practice exploring different ways to approach a problem.",
+    prompt: "Act as a creative thinking trainer. Give me exercises related to [TOPIC] that encourage curiosity, multiple perspectives and original problem-solving. Explain how to evaluate the resulting ideas.",
+    level: "Intermediate",
+    tags: ["creativity", "thinking", "practice"]
+  },
+
+  {
+    title: "Confidence Through Preparation",
+    description: "Build confidence by preparing for a challenging situation.",
+    prompt: "Help me prepare for [SITUATION]. Identify the skills and information I may need, suggest practical preparation activities and help me create a realistic plan for handling uncertainty.",
+    level: "Beginner",
+    tags: ["confidence", "preparation", "growth"]
+  },
+
+  {
+    title: "Time Awareness Coach",
+    description: "Understand how to use available time effectively.",
+    prompt: "Help me review how I currently use my time [CURRENT ROUTINE]. Identify priorities, distractions and opportunities to create a more balanced schedule without overloading my day.",
+    level: "Intermediate",
+    tags: ["time", "balance", "planning"]
+  },
+
+  {
+    title: "Learning From Mistakes",
+    description: "Turn an experience into useful learning.",
+    prompt: "Help me reflect on a recent mistake or setback related to [SITUATION]. Separate what I know from what I assume, identify lessons and suggest constructive actions for the future.",
+    level: "Intermediate",
+    tags: ["reflection", "learning", "resilience"]
+  },
+
+  {
+    title: "Decision Clarity Journal",
+    description: "Organize personal decisions and competing priorities.",
+    prompt: "Help me think through a personal decision about [DECISION]. Clarify my priorities, identify available options, consider possible trade-offs and suggest questions that can help me make an informed choice.",
+    level: "Advanced",
+    tags: ["decisions", "clarity", "reflection"]
+  },
+
+  {
+    title: "Personal Skills Assessment",
+    description: "Review strengths and identify areas for learning.",
+    prompt: "Guide me through a balanced self-assessment related to [AREA]. Ask about my experience, demonstrated skills, interests and learning goals. Help me identify practical areas for further development without making unsupported judgments.",
+    level: "Intermediate",
+    tags: ["self-assessment", "skills", "development"]
+  }
+
+];
+
+
+/* ==========================================
+   08. DATABASE GENERATOR
+========================================== */
+
+let prompts = [];
+
+let activePrompt = null;
+
+let visibleCount = 12;
+
+let favorites = new Set();
+
+let dailyPrompt = null;
+
+
+function generatePromptDatabase() {
+
+  const groups = [
+    {
+      category: "Educational & Learning",
+      id: "education",
+      seeds: educationSeeds
+    },
+    {
+      category: "Content Creation",
+      id: "content",
+      seeds: contentSeeds
+    },
+    {
+      category: "Design & Creativity",
+      id: "design",
+      seeds: designSeeds
+    },
+    {
+      category: "Productivity & Career",
+      id: "productivity",
+      seeds: productivitySeeds
+    },
+    {
+      category: "Personal Growth",
+      id: "growth",
+      seeds: growthSeeds
+    }
+  ];
+
+  let nextId = 1;
+
+  groups.forEach(group => {
+
+    group.seeds.forEach((seed, seedIndex) => {
+
+      promptFormats.forEach((format, formatIndex) => {
+
+        const prompt = [
+          seed.prompt,
+          "",
+          "RESPONSE REQUIREMENTS:",
+          format.instruction,
+          "",
+          "Before completing the task, check that the response is relevant, clear and useful."
+        ].join("\n");
+
+        prompts.push({
+
+          id: nextId,
+
+          categoryId: group.id,
+
+          category: group.category,
+
+          title: `${seed.title} — ${format.name}`,
+
+          description: seed.description,
+
+          prompt: prompt,
+
+          level: seed.level,
+
+          tags: [...seed.tags, format.name.toLowerCase()],
+
+          format: format.name,
+
+          featured:
+            seedIndex === 0 && formatIndex === 0,
+
+          trending:
+            seedIndex < 3 && formatIndex < 2,
+
+          createdAt: nextId
+
+        });
+
+        nextId++;
+
+      });
+
+    });
+
+  });
+
+}
+
+
+/* ==========================================
+   09. INITIALIZE DATABASE
+========================================== */
+
+generatePromptDatabase();
+
+
+/* ==========================================
+   10. DAILY PROMPT SELECTION
+========================================== */
+
+function getDailyPrompt() {
+
+  if (!prompts.length) {
+    return null;
+  }
+
+  const today = new Date();
+
+  const dateKey =
+    today.getFullYear() * 10000 +
+    (today.getMonth() + 1) * 100 +
+    today.getDate();
+
+  const index = dateKey % prompts.length;
+
+  return prompts[index];
+
+}
+
+dailyPrompt = getDailyPrompt();
+
+
+/* ==========================================
+   11. DATABASE VALIDATION
+========================================== */
+
+function validatePromptDatabase() {
+
+  const expectedTotal = 250;
+
+  const categoryCounts = {};
+
+  const uniqueIds = new Set();
+
+  prompts.forEach(prompt => {
+
+    categoryCounts[prompt.category] =
+      (categoryCounts[prompt.category] || 0) + 1;
+
+    uniqueIds.add(prompt.id);
+
+  });
+
+  const valid =
+    prompts.length === expectedTotal &&
+    uniqueIds.size === expectedTotal &&
+    categories.every(category =>
+      categoryCounts[category.name] === 50
+    );
+
+  if (!valid) {
+
+    console.error(
+      "PROMPT database validation failed.",
+      categoryCounts
+    );
+
+    return false;
+
+  }
+
+  console.info(
+    "PROMPT database validated successfully.",
+    {
+      totalPrompts: prompts.length,
+      categoryCounts: categoryCounts
+    }
+  );
+
+  return true;
+
+}
+
+validatePromptDatabase();
+
+
+/* ==========================================
+   <!-- ==========================================
+     PART 3 — PROMPT DATABASE
+========================================== -->
+
+<script>
+
+/* ==========================================
+   01. GLOBAL APPLICATION DATA
+========================================== */
+
+const categories = [
+  {
+    id: "education",
+    name: "Educational & Learning",
+    icon: "fa-graduation-cap",
+    description: "Learn, understand and master new subjects."
+  },
+  {
+    id: "content",
+    name: "Content Creation",
+    icon: "fa-pen-nib",
+    description: "Create engaging content and creative stories."
+  },
+  {
+    id: "design",
+    name: "Design & Creativity",
+    icon: "fa-palette",
+    description: "Develop visual concepts and creative ideas."
+  },
+  {
+    id: "productivity",
+    name: "Productivity & Career",
+    icon: "fa-briefcase",
+    description: "Improve professional skills and workflows."
+  },
+  {
+    id: "growth",
+    name: "Personal Growth",
+    icon: "fa-seedling",
+    description: "Build habits and develop useful life skills."
+  }
+];
+
+
+/* ==========================================
+   02. PROMPT VARIATIONS
+   Each base prompt gets five useful formats.
+========================================== */
+
+const promptFormats = [
+  {
+    name: "Step-by-Step Guide",
+    instruction:
+      "Present the response as a clear step-by-step guide with practical explanations and examples."
+  },
+  {
+    name: "Practical Action Plan",
+    instruction:
+      "Create a practical action plan with priorities, timelines, resources and measurable outcomes."
+  },
+  {
+    name: "Beginner-Friendly Explanation",
+    instruction:
+      "Explain the subject in simple language, define important terms and include beginner-friendly examples."
+  },
+  {
+    name: "Checklist & Framework",
+    instruction:
+      "Organize the response into a structured checklist with key points, common mistakes and useful recommendations."
+  },
+  {
+    name: "Advanced Analysis",
+    instruction:
+      "Provide a detailed analysis, explain important considerations, identify limitations and suggest advanced improvements."
+  }
+];
+
+
+/* ==========================================
+   03. EDUCATIONAL & LEARNING PROMPTS
+========================================== */
+
+const educationSeeds = [
+
+  {
+    title: "Personalized Study Plan",
+    description: "Create a structured study timetable for a learning goal.",
+    prompt: "Act as an experienced academic study coach. Create a realistic study plan for [SUBJECT] over [TIME PERIOD]. Consider my current knowledge level [LEVEL], available study hours [HOURS] and target outcome [GOAL]. Include revision and practice sessions.",
+    level: "Beginner",
+    tags: ["study", "planning", "education"]
+  },
+
+  {
+    title: "Difficult Topic Simplifier",
+    description: "Understand a complex topic through simple explanations.",
+    prompt: "Act as an expert teacher. Explain [TOPIC] to a learner at [LEVEL]. Break it into smaller concepts, explain technical terms, use everyday examples and show how the ideas connect.",
+    level: "Beginner",
+    tags: ["learning", "explanation", "concepts"]
+  },
+
+  {
+    title: "Exam Preparation Coach",
+    description: "Prepare for an examination using focused practice.",
+    prompt: "Act as an examination preparation coach. Help me prepare for [EXAM] in [TIME PERIOD]. Identify important topics, create a revision strategy and suggest practice methods based on the syllabus [SYLLABUS].",
+    level: "Intermediate",
+    tags: ["exam", "revision", "preparation"]
+  },
+
+  {
+    title: "Interactive Quiz Generator",
+    description: "Generate questions to test understanding of a subject.",
+    prompt: "Create an interactive quiz about [TOPIC] for [LEVEL] learners. Include multiple-choice, short-answer and application-based questions. Ask one question at a time and explain each answer after I respond.",
+    level: "Beginner",
+    tags: ["quiz", "practice", "testing"]
+  },
+
+  {
+    title: "Language Learning Partner",
+    description: "Practice a new language through guided activities.",
+    prompt: "Act as a language learning tutor for [LANGUAGE]. My current level is [LEVEL]. Help me improve vocabulary, grammar, reading and conversation through short exercises and corrections.",
+    level: "Beginner",
+    tags: ["language", "grammar", "practice"]
+  },
+
+  {
+    title: "Chapter Summary Creator",
+    description: "Turn a chapter into organized revision notes.",
+    prompt: "Create comprehensive revision notes for [CHAPTER] from [SUBJECT]. Include key concepts, definitions, important examples, formulas where relevant and likely examination questions. Keep the notes accurate and well organized.",
+    level: "Intermediate",
+    tags: ["notes", "summary", "revision"]
+  },
+
+  {
+    title: "Mathematics Problem Tutor",
+    description: "Learn mathematical problem-solving step by step.",
+    prompt: "Act as a patient mathematics tutor. Help me solve [PROBLEM TYPE]. Explain the reasoning behind every step, identify the formula used and provide a similar practice question.",
+    level: "Intermediate",
+    tags: ["mathematics", "problem-solving", "practice"]
+  },
+
+  {
+    title: "Science Concept Explorer",
+    description: "Explore scientific concepts with examples and applications.",
+    prompt: "Teach me [SCIENCE TOPIC] at [LEVEL]. Explain the scientific principles, important terminology, real-world applications and common misconceptions. Suggest a simple way to remember the main ideas.",
+    level: "Intermediate",
+    tags: ["science", "concepts", "learning"]
+  },
+
+  {
+    title: "Research Project Assistant",
+    description: "Plan an educational research project.",
+    prompt: "Help me design an educational research project about [RESEARCH TOPIC]. Define the research question, objectives, scope, reliable source requirements, research method and a logical report structure.",
+    level: "Advanced",
+    tags: ["research", "project", "academic"]
+  },
+
+  {
+    title: "Critical Thinking Trainer",
+    description: "Develop analytical and logical thinking skills.",
+    prompt: "Act as a critical thinking instructor. Present a realistic problem about [TOPIC]. Help me examine assumptions, evaluate evidence, compare possible explanations and develop a reasoned conclusion.",
+    level: "Advanced",
+    tags: ["critical-thinking", "analysis", "reasoning"]
+  }
+
+];
+
+
+/* ==========================================
+   04. CONTENT CREATION PROMPTS
+========================================== */
+
+const contentSeeds = [
+
+  {
+    title: "Instagram Content Strategist",
+    description: "Plan engaging Instagram content for a target audience.",
+    prompt: "Act as a social media content strategist. Develop a content strategy for an Instagram account in [NICHE]. Consider my target audience [AUDIENCE], content style [STYLE] and goals [GOALS]. Suggest content pillars and a sustainable publishing schedule.",
+    level: "Intermediate",
+    tags: ["instagram", "strategy", "social-media"]
+  },
+
+  {
+    title: "YouTube Video Scriptwriter",
+    description: "Develop a structured script for a YouTube video.",
+    prompt: "Act as a professional YouTube scriptwriter. Write a script about [TOPIC] for [AUDIENCE]. Include an engaging opening, logical sections, examples, transitions and a natural conclusion.",
+    level: "Intermediate",
+    tags: ["youtube", "script", "video"]
+  },
+
+  {
+    title: "Reels Idea Generator",
+    description: "Generate short-form video concepts.",
+    prompt: "Generate original short-form video ideas for [NICHE]. My audience is [AUDIENCE] and my preferred style is [STYLE]. For each idea, suggest a hook, visual direction and key message.",
+    level: "Beginner",
+    tags: ["reels", "ideas", "short-form"]
+  },
+
+  {
+    title: "Social Media Caption Writer",
+    description: "Write meaningful captions for social platforms.",
+    prompt: "Write social media captions about [TOPIC] for [PLATFORM]. Use a [TONE] tone, make the opening engaging and include a relevant call to action. Avoid generic phrases.",
+    level: "Beginner",
+    tags: ["captions", "social-media", "writing"]
+  },
+
+  {
+    title: "Blog Article Architect",
+    description: "Build a complete blog article outline.",
+    prompt: "Act as an experienced blog editor. Create a detailed article outline about [TOPIC] for [AUDIENCE]. Include search intent, a compelling introduction, logical headings, useful examples and a conclusion.",
+    level: "Advanced",
+    tags: ["blogging", "writing", "outline"]
+  },
+
+  {
+    title: "Brand Story Creator",
+    description: "Develop an authentic brand story.",
+    prompt: "Help create a distinctive brand story for [BRAND]. Consider its mission [MISSION], audience [AUDIENCE], values [VALUES] and market position [POSITIONING]. Make the story authentic and memorable.",
+    level: "Advanced",
+    tags: ["branding", "storytelling", "business"]
+  },
+
+  {
+    title: "Podcast Episode Planner",
+    description: "Plan an informative and engaging podcast episode.",
+    prompt: "Act as a podcast producer. Plan an episode about [TOPIC] for [AUDIENCE]. Include the episode objective, opening, discussion segments, possible guest questions and closing summary.",
+    level: "Intermediate",
+    tags: ["podcast", "planning", "audio"]
+  },
+
+  {
+    title: "Email Newsletter Writer",
+    description: "Create a useful newsletter for subscribers.",
+    prompt: "Write an email newsletter for [AUDIENCE] about [TOPIC]. Include an interesting subject line, concise introduction, useful insights, clear sections and one relevant call to action.",
+    level: "Intermediate",
+    tags: ["newsletter", "email", "writing"]
+  },
+
+  {
+    title: "Content Repurposing Strategist",
+    description: "Transform one content idea into multiple formats.",
+    prompt: "Take my original content about [TOPIC] and develop a repurposing strategy for [PLATFORMS]. Suggest how to adapt it into videos, posts, carousels, newsletters and other suitable formats without repeating identical content.",
+    level: "Advanced",
+    tags: ["repurposing", "content", "strategy"]
+  },
+
+  {
+    title: "Creative Storytelling Assistant",
+    description: "Build an original story with a clear narrative.",
+    prompt: "Act as a creative storytelling editor. Help develop a story about [IDEA] in the [GENRE] genre. Create interesting characters, a central conflict, meaningful progression and a satisfying ending.",
+    level: "Intermediate",
+    tags: ["storytelling", "creative-writing", "ideas"]
+  }
+
+];
+
+
+/* ==========================================
+   05. DESIGN & CREATIVITY PROMPTS
+========================================== */
+
+const designSeeds = [
+
+  {
+    title: "Website UI/UX Designer",
+    description: "Plan a polished interface for a digital product.",
+    prompt: "Act as a senior UI/UX designer. Design a website concept for [PRODUCT]. Define the target users, visual direction, information architecture, navigation, important sections and responsive behavior.",
+    level: "Advanced",
+    tags: ["ui", "ux", "website"]
+  },
+
+  {
+    title: "Logo Concept Developer",
+    description: "Explore distinctive logo design directions.",
+    prompt: "Act as a brand identity designer. Develop five original logo directions for [BRAND]. Consider its personality [PERSONALITY], industry [INDUSTRY] and target audience [AUDIENCE]. Explain the concept, typography and visual symbolism.",
+    level: "Intermediate",
+    tags: ["logo", "branding", "identity"]
+  },
+
+  {
+    title: "Color Palette Architect",
+    description: "Create a consistent visual color system.",
+    prompt: "Create a professional color palette for [PROJECT]. Consider its personality [PERSONALITY] and audience [AUDIENCE]. Provide primary, secondary, accent, background and text colors with practical usage guidance.",
+    level: "Beginner",
+    tags: ["colors", "visual-design", "branding"]
+  },
+
+  {
+    title: "Mobile App Design Planner",
+    description: "Develop a user-friendly mobile application concept.",
+    prompt: "Act as a mobile product designer. Plan an application for [PURPOSE]. Define its main user journeys, core screens, navigation, interaction patterns and accessibility considerations.",
+    level: "Advanced",
+    tags: ["mobile", "app-design", "ux"]
+  },
+
+  {
+    title: "Typography Pairing Assistant",
+    description: "Select suitable font combinations for a design.",
+    prompt: "Recommend typography combinations for [PROJECT TYPE]. Consider readability, brand personality and platform requirements. Explain heading, body and supporting text roles, hierarchy and spacing.",
+    level: "Intermediate",
+    tags: ["typography", "fonts", "design"]
+  },
+
+  {
+    title: "Creative Campaign Concept",
+    description: "Develop a creative visual campaign direction.",
+    prompt: "Develop a creative campaign concept for [BRAND OR PRODUCT]. Define the central idea, visual message, audience, design language, campaign assets and platform adaptations.",
+    level: "Advanced",
+    tags: ["campaign", "creative", "marketing"]
+  },
+
+  {
+    title: "Interior Design Concept",
+    description: "Explore a functional interior design direction.",
+    prompt: "Act as an interior design concept consultant. Plan a design direction for [ROOM TYPE] with dimensions [DIMENSIONS], preferred style [STYLE] and budget [BUDGET]. Consider functionality, lighting, storage and visual harmony.",
+    level: "Intermediate",
+    tags: ["interior", "space", "design"]
+  },
+
+  {
+    title: "Presentation Design Planner",
+    description: "Create a professional presentation structure.",
+    prompt: "Plan a professional presentation about [TOPIC] for [AUDIENCE]. Define the narrative, slide sequence, key message per slide, visual elements and final takeaway.",
+    level: "Beginner",
+    tags: ["presentation", "slides", "visual"]
+  },
+
+  {
+    title: "Packaging Design Strategist",
+    description: "Develop packaging concepts for a product.",
+    prompt: "Develop packaging design directions for [PRODUCT]. Consider product positioning, materials, audience, shelf visibility, usability and sustainability. Explain how the packaging communicates the brand.",
+    level: "Advanced",
+    tags: ["packaging", "product-design", "branding"]
+  },
+
+  {
+    title: "Creative Brainstorming Partner",
+    description: "Generate and evaluate original creative concepts.",
+    prompt: "Act as a creative brainstorming partner. Generate original concepts for [CHALLENGE]. Explore different approaches, challenge obvious assumptions and organize the strongest ideas by originality and feasibility.",
+    level: "Intermediate",
+    tags: ["brainstorming", "ideas", "creativity"]
+  }
+
+];
+
+
+/* ==========================================
+   06. PRODUCTIVITY & CAREER PROMPTS
+========================================== */
+
+const productivitySeeds = [
+
+  {
+    title: "Daily Productivity Planner",
+    description: "Organize tasks around important daily priorities.",
+    prompt: "Act as a productivity coach. Help me plan a day around [TASKS], available time [HOURS] and priorities [PRIORITIES]. Include realistic time blocks, breaks and a simple review process.",
+    level: "Beginner",
+    tags: ["productivity", "planning", "time"]
+  },
+
+  {
+    title: "Project Management Assistant",
+    description: "Turn a project idea into an organized action plan.",
+    prompt: "Act as a project manager. Help organize [PROJECT]. Define its objectives, deliverables, milestones, responsibilities, dependencies, possible risks and progress tracking method.",
+    level: "Advanced",
+    tags: ["project", "management", "planning"]
+  },
+
+  {
+    title: "Professional Resume Reviewer",
+    description: "Improve the clarity and structure of a resume.",
+    prompt: "Act as a professional resume reviewer. Review my resume content for [ROLE]. Identify unclear descriptions, missing evidence, formatting improvements and ways to communicate relevant skills accurately.",
+    level: "Intermediate",
+    tags: ["resume", "career", "professional"]
+  },
+
+  {
+    title: "Interview Preparation Coach",
+    description: "Prepare for professional interview questions.",
+    prompt: "Act as an interview preparation coach for [ROLE]. Create relevant interview questions, explain what each question evaluates and help me develop honest, structured answers using my experience [EXPERIENCE].",
+    level: "Intermediate",
+    tags: ["interview", "career", "practice"]
+  },
+
+  {
+    title: "Business Idea Evaluator",
+    description: "Evaluate a business concept and its assumptions.",
+    prompt: "Act as a business strategy analyst. Evaluate my idea [IDEA] for [CUSTOMER GROUP]. Examine the problem, customer demand assumptions, possible alternatives, operating requirements and key validation experiments.",
+    level: "Advanced",
+    tags: ["business", "strategy", "analysis"]
+  },
+
+  {
+    title: "Meeting Agenda Creator",
+    description: "Prepare an organized meeting agenda.",
+    prompt: "Create a focused meeting agenda for [MEETING PURPOSE]. Include objectives, discussion topics, estimated durations, preparation requirements and expected decisions.",
+    level: "Beginner",
+    tags: ["meetings", "organization", "work"]
+  },
+
+  {
+    title: "Decision Making Framework",
+    description: "Compare options using a structured decision process.",
+    prompt: "Help me evaluate [DECISION]. Identify my options, important criteria, trade-offs, uncertainties and possible consequences. Present a balanced comparison without making unsupported assumptions.",
+    level: "Advanced",
+    tags: ["decision", "analysis", "planning"]
+  },
+
+  {
+    title: "Skill Development Roadmap",
+    description: "Create a roadmap for learning a professional skill.",
+    prompt: "Create a learning roadmap for [SKILL] over [TIME PERIOD]. Consider my current level [LEVEL], learning resources [RESOURCES] and target capability [GOAL]. Include practice projects and progress checks.",
+    level: "Intermediate",
+    tags: ["skills", "career", "learning"]
+  },
+
+  {
+    title: "Workflow Improvement Analyst",
+    description: "Find opportunities to improve a work process.",
+    prompt: "Act as a workflow improvement consultant. Analyze my current process [PROCESS]. Identify repetitive tasks, bottlenecks, dependencies and realistic opportunities for simplification or automation.",
+    level: "Advanced",
+    tags: ["workflow", "efficiency", "automation"]
+  },
+
+  {
+    title: "Professional Email Assistant",
+    description: "Draft clear and professional workplace emails.",
+    prompt: "Help me draft a professional email about [SUBJECT] to [RECIPIENT TYPE]. Use a [TONE] tone, communicate the purpose clearly and include the necessary context and next action.",
+    level: "Beginner",
+    tags: ["email", "communication", "work"]
+  }
+
+];
+
+
+/* ==========================================
+   07. PERSONAL GROWTH PROMPTS
+========================================== */
+
+const growthSeeds = [
+
+  {
+    title: "Personal Goal Planner",
+    description: "Turn a personal goal into realistic milestones.",
+    prompt: "Act as a personal development coach. Help me plan a goal related to [GOAL]. Consider my current situation [CONTEXT], available resources [RESOURCES] and preferred timeline [TIME]. Define practical milestones and review points.",
+    level: "Beginner",
+    tags: ["goals", "planning", "development"]
+  },
+
+  {
+    title: "Habit Building Guide",
+    description: "Develop a sustainable routine for a positive habit.",
+    prompt: "Help me develop a realistic habit related to [HABIT]. Identify a small starting action, useful environmental cues, possible obstacles and a simple way to track consistency.",
+    level: "Beginner",
+    tags: ["habits", "routine", "consistency"]
+  },
+
+  {
+    title: "Reflection Journal Assistant",
+    description: "Explore thoughts and experiences through reflection.",
+    prompt: "Act as a thoughtful journaling guide. Give me reflection questions about [TOPIC]. Help me examine what happened, what I learned, what I value and what practical next step I might consider.",
+    level: "Beginner",
+    tags: ["journaling", "reflection", "awareness"]
+  },
+
+  {
+    title: "Communication Skills Coach",
+    description: "Improve clarity and confidence in communication.",
+    prompt: "Act as a communication skills coach. Help me improve [COMMUNICATION SKILL]. Explain useful techniques, provide realistic practice scenarios and give constructive feedback on my responses.",
+    level: "Intermediate",
+    tags: ["communication", "confidence", "skills"]
+  },
+
+  {
+    title: "Creative Thinking Trainer",
+    description: "Practice exploring different ways to approach a problem.",
+    prompt: "Act as a creative thinking trainer. Give me exercises related to [TOPIC] that encourage curiosity, multiple perspectives and original problem-solving. Explain how to evaluate the resulting ideas.",
+    level: "Intermediate",
+    tags: ["creativity", "thinking", "practice"]
+  },
+
+  {
+    title: "Confidence Through Preparation",
+    description: "Build confidence by preparing for a challenging situation.",
+    prompt: "Help me prepare for [SITUATION]. Identify the skills and information I may need, suggest practical preparation activities and help me create a realistic plan for handling uncertainty.",
+    level: "Beginner",
+    tags: ["confidence", "preparation", "growth"]
+  },
+
+  {
+    title: "Time Awareness Coach",
+    description: "Understand how to use available time effectively.",
+    prompt: "Help me review how I currently use my time [CURRENT ROUTINE]. Identify priorities, distractions and opportunities to create a more balanced schedule without overloading my day.",
+    level: "Intermediate",
+    tags: ["time", "balance", "planning"]
+  },
+
+  {
+    title: "Learning From Mistakes",
+    description: "Turn an experience into useful learning.",
+    prompt: "Help me reflect on a recent mistake or setback related to [SITUATION]. Separate what I know from what I assume, identify lessons and suggest constructive actions for the future.",
+    level: "Intermediate",
+    tags: ["reflection", "learning", "resilience"]
+  },
+
+  {
+    title: "Decision Clarity Journal",
+    description: "Organize personal decisions and competing priorities.",
+    prompt: "Help me think through a personal decision about [DECISION]. Clarify my priorities, identify available options, consider possible trade-offs and suggest questions that can help me make an informed choice.",
+    level: "Advanced",
+    tags: ["decisions", "clarity", "reflection"]
+  },
+
+  {
+    title: "Personal Skills Assessment",
+    description: "Review strengths and identify areas for learning.",
+    prompt: "Guide me through a balanced self-assessment related to [AREA]. Ask about my experience, demonstrated skills, interests and learning goals. Help me identify practical areas for further development without making unsupported judgments.",
+    level: "Intermediate",
+    tags: ["self-assessment", "skills", "development"]
+  }
+
+];
+
+
+/* ==========================================
+   08. DATABASE GENERATOR
+========================================== */
+
+let prompts = [];
+
+let activePrompt = null;
+
+let visibleCount = 12;
+
+let favorites = new Set();
+
+let dailyPrompt = null;
+
+
+function generatePromptDatabase() {
+
+  const groups = [
+    {
+      category: "Educational & Learning",
+      id: "education",
+      seeds: educationSeeds
+    },
+    {
+      category: "Content Creation",
+      id: "content",
+      seeds: contentSeeds
+    },
+    {
+      category: "Design & Creativity",
+      id: "design",
+      seeds: designSeeds
+    },
+    {
+      category: "Productivity & Career",
+      id: "productivity",
+      seeds: productivitySeeds
+    },
+    {
+      category: "Personal Growth",
+      id: "growth",
+      seeds: growthSeeds
+    }
+  ];
+
+  let nextId = 1;
+
+  groups.forEach(group => {
+
+    group.seeds.forEach((seed, seedIndex) => {
+
+      promptFormats.forEach((format, formatIndex) => {
+
+        const prompt = [
+          seed.prompt,
+          "",
+          "RESPONSE REQUIREMENTS:",
+          format.instruction,
+          "",
+          "Before completing the task, check that the response is relevant, clear and useful."
+        ].join("\n");
+
+        prompts.push({
+
+          id: nextId,
+
+          categoryId: group.id,
+
+          category: group.category,
+
+          title: `${seed.title} — ${format.name}`,
+
+          description: seed.description,
+
+          prompt: prompt,
+
+          level: seed.level,
+
+          tags: [...seed.tags, format.name.toLowerCase()],
+
+          format: format.name,
+
+          featured:
+            seedIndex === 0 && formatIndex === 0,
+
+          trending:
+            seedIndex < 3 && formatIndex < 2,
+
+          createdAt: nextId
+
+        });
+
+        nextId++;
+
+      });
+
+    });
+
+  });
+
+}
+
+
+/* ==========================================
+   09. INITIALIZE DATABASE
+========================================== */
+
+generatePromptDatabase();
+
+
+/* ==========================================
+   10. DAILY PROMPT SELECTION
+========================================== */
+
+function getDailyPrompt() {
+
+  if (!prompts.length) {
+    return null;
+  }
+
+  const today = new Date();
+
+  const dateKey =
+    today.getFullYear() * 10000 +
+    (today.getMonth() + 1) * 100 +
+    today.getDate();
+
+  const index = dateKey % prompts.length;
+
+  return prompts[index];
+
+}
+
+dailyPrompt = getDailyPrompt();
+
+
+/* ==========================================
+   11. DATABASE VALIDATION
+========================================== */
+
+function validatePromptDatabase() {
+
+  const expectedTotal = 250;
+
+  const categoryCounts = {};
+
+  const uniqueIds = new Set();
+
+  prompts.forEach(prompt => {
+
+    categoryCounts[prompt.category] =
+      (categoryCounts[prompt.category] || 0) + 1;
+
+    uniqueIds.add(prompt.id);
+
+  });
+
+  const valid =
+    prompts.length === expectedTotal &&
+    uniqueIds.size === expectedTotal &&
+    categories.every(category =>
+      categoryCounts[category.name] === 50
+    );
+
+  if (!valid) {
+
+    console.error(
+      "PROMPT database validation failed.",
+      categoryCounts
+    );
+
+    return false;
+
+  }
+
+  console.info(
+    "PROMPT database validated successfully.",
+    {
+      totalPrompts: prompts.length,
+      categoryCounts: categoryCounts
+    }
+  );
+
+  return true;
+
+}
+
+validatePromptDatabase();
+
+
+/* ==========================================
+   /* ==========================================
+   PART 4 — PROMPT LIBRARY ENGINE
+========================================== */
+
+
+/* ==========================================
+   01. SAFE HTML HELPER
+========================================== */
+
+function escapeHTML(value) {
+
+  return String(value ?? "").replace(
+    /[&<>"']/g,
+    character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    })[character]
+  );
+
+}
+
+
+/* ==========================================
+   02. TOAST NOTIFICATIONS
+========================================== */
+
+function showToast(message, type = "success") {
+
+  const toast = document.getElementById("toast");
+
+  if (!toast) return;
+
+  toast.textContent = message;
+
+  toast.dataset.type = type;
+
+  toast.classList.add("show");
+
+  clearTimeout(showToast.timer);
+
+  showToast.timer = setTimeout(() => {
+
+    toast.classList.remove("show");
+
+  }, 2600);
+
+}
+
+
+/* ==========================================
+   03. LOCAL STORAGE HELPERS
+========================================== */
+
+function readStorage(key, fallback) {
+
+  try {
+
+    const saved = localStorage.getItem(key);
+
+    return saved ? JSON.parse(saved) : fallback;
+
+  } catch (error) {
+
+    console.warn("Storage read failed:", error);
+
+    return fallback;
+
+  }
+
+}
+
+
+function writeStorage(key, value) {
+
+  try {
+
+    localStorage.setItem(
+      key,
+      JSON.stringify(value)
+    );
+
+    return true;
+
+  } catch (error) {
+
+    console.warn("Storage write failed:", error);
+
+    showToast(
+      "Browser storage is unavailable.",
+      "error"
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/* ==========================================
+   04. LOAD SAVED FAVORITES
+========================================== */
+
+function loadFavorites() {
+
+  const saved = readStorage(
+    "promptFavorites",
+    []
+  );
+
+  if (!Array.isArray(saved)) {
+
+    favorites = new Set();
+
+    return;
+
+  }
+
+  const validIds = saved.filter(id =>
+    prompts.some(prompt => prompt.id === id)
+  );
+
+  favorites = new Set(validIds);
+
+}
+
+
+/* ==========================================
+   05. SAVE FAVORITES
+========================================== */
+
+function saveFavorites() {
+
+  return writeStorage(
+    "promptFavorites",
+    Array.from(favorites)
+  );
+
+}
+
+
+/* ==========================================
+   06. COPY TEXT FUNCTION
+========================================== */
+
+async function copyText(text) {
+
+  const content = String(text ?? "");
+
+  if (!content.trim()) {
+
+    showToast("Nothing to copy.", "error");
+
+    return false;
+
+  }
+
+  try {
+
+    if (
+      navigator.clipboard &&
+      window.isSecureContext
+    ) {
+
+      await navigator.clipboard.writeText(content);
+
+    } else {
+
+      const temporary = document.createElement("textarea");
+
+      temporary.value = content;
+
+      temporary.style.position = "fixed";
+
+      temporary.style.opacity = "0";
+
+      document.body.appendChild(temporary);
+
+      temporary.select();
+
+      const copied = document.execCommand("copy");
+
+      temporary.remove();
+
+      if (!copied) {
+        throw new Error("Copy command failed.");
+      }
+
+    }
+
+    showToast("Prompt copied successfully!");
+
+    return true;
+
+  } catch (error) {
+
+    console.error("Copy failed:", error);
+
+    showToast(
+      "Copy failed. Please select and copy manually.",
+      "error"
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/* ==========================================
+   07. PROMPT CARD COMPONENT
+========================================== */
+
+function createPromptCard(prompt) {
+
+  const isFavorite = favorites.has(prompt.id);
+
+  const tags = prompt.tags
+    .slice(0, 3)
+    .map(tag =>
+      `<span class="tag">${escapeHTML(tag)}</span>`
+    )
+    .join("");
+
+  return `
+
+    <article class="card prompt-card">
+
+      <div class="prompt-card-top">
+
+        <span class="badge">
+          ${escapeHTML(prompt.level)}
+        </span>
+
+        <button
+          class="btn-icon"
+          type="button"
+          data-action="favorite"
+          data-id="${prompt.id}"
+          aria-label="${isFavorite ? "Remove from" : "Add to"} favorites"
+          aria-pressed="${isFavorite}"
+          title="${isFavorite ? "Remove favorite" : "Add favorite"}"
+        >
+
+          <i class="${isFavorite ? "fa-solid" : "fa-regular"} fa-heart"></i>
+
+        </button>
+
+      </div>
+
+      <div class="prompt-card-content">
+
+        <p class="eyebrow">
+          ${escapeHTML(prompt.category)}
+        </p>
+
+        <h3>
+          ${escapeHTML(prompt.title)}
+        </h3>
+
+        <p class="section-description">
+          ${escapeHTML(prompt.description)}
+        </p>
+
+        <div class="prompt-card-tags">
+          ${tags}
+        </div>
+
+      </div>
+
+      <div class="prompt-card-actions">
+
+        <button
+          class="btn btn-primary"
+          type="button"
+          data-action="open"
+          data-id="${prompt.id}"
+        >
+          View Prompt
+        </button>
+
+        <button
+          class="btn btn-secondary"
+          type="button"
+          data-action="copy"
+          data-id="${prompt.id}"
+          aria-label="Copy prompt"
+        >
+          <i class="fa-regular fa-copy"></i>
+        </button>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* ==========================================
+   08. CATEGORY RENDERING
+========================================== */
+
+function renderCategories() {
+
+  const grid = document.getElementById("categoryGrid");
+
+  if (!grid) return;
+
+  grid.innerHTML = categories.map(category => {
+
+    const count = prompts.filter(prompt =>
+      prompt.categoryId === category.id
+    ).length;
+
+    return `
+
+      <button
+        class="card category-card"
+        type="button"
+        data-category="${escapeHTML(category.name)}"
+        style="text-align:left;color:inherit;font:inherit;cursor:pointer;"
+      >
+
+        <span class="category-icon">
+          <i class="fa-solid ${escapeHTML(category.icon)}"></i>
+        </span>
+
+        <h3>
+          ${escapeHTML(category.name)}
+        </h3>
+
+        <p class="section-description">
+          ${escapeHTML(category.description)}
+        </p>
+
+        <span class="badge">
+          ${count} Prompts
+        </span>
+
+      </button>
+
+    `;
+
+  }).join("");
+
+}
+
+
+/* ==========================================
+   09. FILTER ENGINE
+========================================== */
+
+function getFilteredPrompts() {
+
+  const searchInput =
+    document.getElementById("librarySearch");
+
+  const categoryInput =
+    document.getElementById("categoryFilter");
+
+  const levelInput =
+    document.getElementById("levelFilter");
+
+  const sortInput =
+    document.getElementById("sortFilter");
+
+  const search = (
+    searchInput?.value || ""
+  ).trim().toLowerCase();
+
+  const category = categoryInput?.value || "";
+
+  const level = levelInput?.value || "";
+
+  const sort = sortInput?.value || "popular";
+
+  let result = [...prompts];
+
+  if (search) {
+
+    result = result.filter(prompt => {
+
+      const searchableText = [
+
+        prompt.title,
+
+        prompt.description,
+
+        prompt.category,
+
+        prompt.prompt,
+
+        ...prompt.tags
+
+      ].join(" ").toLowerCase();
+
+      return searchableText.includes(search);
+
+    });
+
+  }
+
+  if (category) {
+
+    result = result.filter(prompt =>
+      prompt.category === category
+    );
+
+  }
+
+  if (level) {
+
+    result = result.filter(prompt =>
+      prompt.level === level
+    );
+
+  }
+
+  if (sort === "newest") {
+
+    result.sort((a, b) =>
+      b.createdAt - a.createdAt
+    );
+
+  } else if (sort === "alphabetical") {
+
+    result.sort((a, b) =>
+      a.title.localeCompare(b.title)
+    );
+
+  } else {
+
+    result.sort((a, b) => {
+
+      const scoreA =
+        (a.trending ? 10 : 0) +
+        (a.featured ? 5 : 0);
+
+      const scoreB =
+        (b.trending ? 10 : 0) +
+        (b.featured ? 5 : 0);
+
+      return scoreB - scoreA;
+
+    });
+
+  }
+
+  return result;
+
+}
+
+
+/* ==========================================
+   10. MAIN LIBRARY RENDER
+========================================== */
+
+function renderLibrary() {
+
+  const grid = document.getElementById("promptGrid");
+
+  const count = document.getElementById("promptCount");
+
+  const loadMoreButton =
+    document.getElementById("loadMore");
+
+  if (!grid) return;
+
+  const filtered = getFilteredPrompts();
+
+  const visible = filtered.slice(
+    0,
+    visibleCount
+  );
+
+  if (count) {
+
+    count.textContent =
+      `${filtered.length} Prompts Found`;
+
+  }
+
+  if (!filtered.length) {
+
+    grid.innerHTML = `
+
+      <div class="glass-panel" style="grid-column:1/-1;padding:32px;text-align:center;">
+
+        <i class="fa-solid fa-magnifying-glass" style="font-size:28px;"></i>
+
+        <h3>No prompts found</h3>
+
+        <p class="section-description">
+          Try another search term or change your filters.
+        </p>
+
+      </div>
+
+    `;
+
+  } else {
+
+    grid.innerHTML = visible
+      .map(createPromptCard)
+      .join("");
+
+  }
+
+  if (loadMoreButton) {
+
+    loadMoreButton.style.display =
+      filtered.length > visibleCount
+        ? "inline-flex"
+        : "none";
+
+  }
+
+}
+
+
+/* ==========================================
+   11. TRENDING PROMPTS
+========================================== */
+
+function renderTrending() {
+
+  const grid = document.getElementById("trendingGrid");
+
+  if (!grid) return;
+
+  const trending = prompts
+    .filter(prompt => prompt.trending)
+    .slice(0, 6);
+
+  grid.innerHTML = trending
+    .map(createPromptCard)
+    .join("");
+
+}
+
+
+/* ==========================================
+   12. LATEST PROMPTS
+========================================== */
+
+function renderLatest() {
+
+  const grid = document.getElementById("latestGrid");
+
+  if (!grid) return;
+
+  const latest = [...prompts]
+    .sort((a, b) =>
+      b.createdAt - a.createdAt
+    )
+    .slice(0, 6);
+
+  grid.innerHTML = latest
+    .map(createPromptCard)
+    .join("");
+
+}
+
+
+/* ==========================================
+   13. FAVORITES RENDERING
+========================================== */
+
+function renderFavorites() {
+
+  const grid = document.getElementById("favoritesGrid");
+
+  if (!grid) return;
+
+  const savedPrompts = prompts.filter(prompt =>
+    favorites.has(prompt.id)
+  );
+
+  if (!savedPrompts.length) {
+
+    grid.innerHTML = `
+
+      <div class="glass-panel" style="grid-column:1/-1;padding:24px;text-align:center;">
+
+        <i class="fa-regular fa-heart" style="font-size:28px;"></i>
+
+        <h3>No favorites yet</h3>
+
+        <p class="section-description">
+          Save prompts you like to find them here.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+  grid.innerHTML = savedPrompts
+    .map(createPromptCard)
+    .join("");
+
+}
+
+
+/* ==========================================
+   14. FAVORITE TOGGLE
+========================================== */
+
+function toggleFavorite(id) {
+
+  const prompt = prompts.find(item =>
+    item.id === Number(id)
+  );
+
+  if (!prompt) return;
+
+  if (favorites.has(prompt.id)) {
+
+    favorites.delete(prompt.id);
+
+    showToast("Removed from favorites.");
+
+  } else {
+
+    favorites.add(prompt.id);
+
+    showToast("Added to favorites!");
+
+  }
+
+  saveFavorites();
+
+  renderLibrary();
+
+  renderTrending();
+
+  renderLatest();
+
+  renderFavorites();
+
+  if (activePrompt) {
+
+    const current = prompts.find(item =>
+      item.id === activePrompt.id
+    );
+
+    if (current) {
+
+      updateModalFavoriteButton();
+
+    }
+
+  }
+
+}
+
+
+/* ==========================================
+   15. OPEN PROMPT DETAILS
+========================================== */
+
+function openPrompt(id) {
+
+  const prompt = prompts.find(item =>
+    item.id === Number(id)
+  );
+
+  if (!prompt) {
+
+    showToast("Prompt not found.", "error");
+
+    return;
+
+  }
+
+  activePrompt = prompt;
+
+  const modal = document.getElementById("promptModal");
+
+  const title = document.getElementById("modalTitle");
+
+  const body = document.getElementById("modalBody");
+
+  if (!modal || !title || !body) return;
+
+  title.textContent = prompt.title;
+
+  body.innerHTML = `
+
+    <div class="prompt-detail-meta">
+
+      <span class="badge">
+        ${escapeHTML(prompt.category)}
+      </span>
+
+      <span class="badge">
+        ${escapeHTML(prompt.level)}
+      </span>
+
+    </div>
+
+    <p class="section-description">
+      ${escapeHTML(prompt.description)}
+    </p>
+
+    <div class="glass-panel" style="padding:18px;">
+
+      <p class="eyebrow">PROMPT TEXT</p>
+
+      <pre style="white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;line-height:1.8;">${escapeHTML(prompt.prompt)}</pre>
+
+    </div>
+
+    <div class="prompt-card-tags" style="margin-top:16px;">
+
+      ${prompt.tags.map(tag =>
+        `<span class="tag">${escapeHTML(tag)}</span>`
+      ).join("")}
+
+    </div>
+
+  `;
+
+  updateModalFavoriteButton();
+
+  modal.classList.add("active");
+
+  modal.setAttribute("aria-hidden", "false");
+
+  document.body.style.overflow = "hidden";
+
+}
+
+
+/* ==========================================
+   16. UPDATE MODAL FAVORITE BUTTON
+========================================== */
+
+function updateModalFavoriteButton() {
+
+  const button = document.getElementById("modalFavorite");
+
+  if (!button || !activePrompt) return;
+
+  const saved = favorites.has(activePrompt.id);
+
+  button.innerHTML = saved
+    ? '<i class="fa-solid fa-heart"></i> Saved'
+    : '<i class="fa-regular fa-heart"></i> Save';
+
+  button.setAttribute("aria-pressed", String(saved));
+
+}
+
+
+/* ==========================================
+   17. CLOSE PROMPT MODAL
+========================================== */
+
+function closeModal() {
+
+  const modal = document.getElementById("promptModal");
+
+  if (!modal) return;
+
+  modal.classList.remove("active");
+
+  modal.setAttribute("aria-hidden", "true");
+
+  document.body.style.overflow = "";
+
+  activePrompt = null;
+
+}
+
+
+/* ==========================================
+   18. DAILY PROMPT RENDER
+========================================== */
+
+function renderDailyPrompt() {
+
+  const container =
+    document.getElementById("dailyPromptContent");
+
+  if (!container || !dailyPrompt) return;
+
+  container.innerHTML = `
+
+    <div class="eyebrow">
+      ${escapeHTML(dailyPrompt.category)}
+    </div>
+
+    <h3>
+      ${escapeHTML(dailyPrompt.title)}
+    </h3>
+
+    <p class="section-description">
+      ${escapeHTML(dailyPrompt.description)}
+    </p>
+
+    <span class="badge">
+      ${escapeHTML(dailyPrompt.level)}
+    </span>
+
+  `;
+
+}
+
+
+/* ==========================================
+   19. PROMPT SEARCH RESET
+========================================== */
+
+function resetLibraryFilters() {
+
+  const search = document.getElementById("librarySearch");
+
+  const category = document.getElementById("categoryFilter");
+
+  const level = document.getElementById("levelFilter");
+
+  const sort = document.getElementById("sortFilter");
+
+  if (search) search.value = "";
+
+  if (category) category.value = "";
+
+  if (level) level.value = "";
+
+  if (sort) sort.value = "popular";
+
+  visibleCount = 12;
+
+  renderLibrary();
+
+}
+
+
+/* ==========================================
+   20. INITIAL FAVORITES LOAD
+========================================== */
+
+loadFavorites();
+
+
+/* ==========================================
+   /* ==========================================
+   PART 5 — PLAYGROUND & ADVANCED TOOLS
+========================================== */
+
+
+/* ==========================================
+   01. PLAYGROUND HELPERS
+========================================== */
+
+function getElement(id) {
+
+  return document.getElementById(id);
+
+}
+
+
+function getPlaygroundInput() {
+
+  return getElement("playgroundInput");
+
+}
+
+
+function getPlaygroundOutput() {
+
+  return getElement("playgroundOutput");
+
+}
+
+
+/* ==========================================
+   02. PROMPT CUSTOMIZATION ENGINE
+========================================== */
+
+function customizePrompt(originalPrompt) {
+
+  const text = String(originalPrompt || "").trim();
+
+  if (!text) {
+
+    return "";
+
+  }
+
+  const improvementInstructions = [
+
+    "Act as a helpful expert in the requested subject.",
+
+    "Understand the objective before preparing the response.",
+
+    "Use clear structure and practical explanations.",
+
+    "Include relevant examples where useful.",
+
+    "Avoid unsupported claims and unnecessary repetition.",
+
+    "Check that the final response follows the requested format."
+
+  ];
+
+  const improvedPrompt = [
+
+    text,
+
+    "",
+
+    "ADDITIONAL INSTRUCTIONS:",
+
+    ...improvementInstructions.map(
+      (item, index) => `${index + 1}. ${item}`
+    )
+
+  ].join("\n");
+
+  return improvedPrompt;
+
+}
+
+
+/* ==========================================
+   03. PLAYGROUND CUSTOMIZE ACTION
+========================================== */
+
+function runPlayground() {
+
+  const input = getPlaygroundInput();
+
+  const output = getPlaygroundOutput();
+
+  if (!input || !output) return;
+
+  const originalText = input.value.trim();
+
+  if (!originalText) {
+
+    showToast(
+      "Write a prompt first.",
+      "error"
+    );
+
+    input.focus();
+
+    return;
+
+  }
+
+  const customized = customizePrompt(originalText);
+
+  output.value = customized;
+
+  showToast(
+    "Prompt structure improved!"
+  );
+
+}
+
+
+/* ==========================================
+   04. CLEAR PLAYGROUND
+========================================== */
+
+function clearPlayground() {
+
+  const input = getPlaygroundInput();
+
+  const output = getPlaygroundOutput();
+
+  if (input) input.value = "";
+
+  if (output) output.value = "";
+
+  showToast("Playground cleared.");
+
+}
+
+
+/* ==========================================
+   05. SAVE PLAYGROUND DRAFT
+========================================== */
+
+function savePlaygroundDraft() {
+
+  const input = getPlaygroundInput();
+
+  const output = getPlaygroundOutput();
+
+  if (!input || !output) return;
+
+  const finalText =
+    output.value.trim() || input.value.trim();
+
+  if (!finalText) {
+
+    showToast(
+      "Write something before saving.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  const drafts = readStorage(
+    "promptDrafts",
+    []
+  );
+
+  if (!Array.isArray(drafts)) {
+
+    showToast(
+      "Could not read saved drafts.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  const draft = {
+
+    id: Date.now(),
+
+    title: finalText
+      .split("\n")[0]
+      .slice(0, 60) || "Untitled Draft",
+
+    content: finalText,
+
+    savedAt: new Date().toISOString()
+
+  };
+
+  drafts.unshift(draft);
+
+  const saved = writeStorage(
+    "promptDrafts",
+    drafts.slice(0, 50)
+  );
+
+  if (saved) {
+
+    showToast("Draft saved successfully!");
+
+    renderDraftManager();
+
+  }
+
+}
+
+
+/* ==========================================
+   06. RESTORE LAST PLAYGROUND DRAFT
+========================================== */
+
+function restorePlaygroundDraft() {
+
+  const drafts = readStorage(
+    "promptDrafts",
+    []
+  );
+
+  if (!Array.isArray(drafts) || !drafts.length) {
+
+    return;
+
+  }
+
+  const latest = drafts[0];
+
+  const input = getPlaygroundInput();
+
+  if (input && !input.value.trim()) {
+
+    input.value = latest.content;
+
+  }
+
+}
+
+
+/* ==========================================
+   07. DOWNLOAD PROMPT AS TXT
+========================================== */
+
+function downloadPromptText(text, filename = "prompt.txt") {
+
+  const content = String(text || "").trim();
+
+  if (!content) {
+
+    showToast(
+      "No prompt available to download.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  try {
+
+    const blob = new Blob(
+      [content],
+      { type: "text/plain;charset=utf-8" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.download = filename;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+    showToast("TXT file prepared!");
+
+  } catch (error) {
+
+    console.error("Download failed:", error);
+
+    showToast(
+      "Unable to download this file.",
+      "error"
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   08. CREATE DOWNLOAD BUTTON
+========================================== */
+
+function createDownloadButton() {
+
+  const toolbar = document.querySelector(
+    ".playground-toolbar"
+  );
+
+  if (!toolbar || getElement("downloadPlayground")) {
+
+    return;
+
+  }
+
+  const button = document.createElement("button");
+
+  button.id = "downloadPlayground";
+
+  button.type = "button";
+
+  button.className = "btn btn-secondary";
+
+  button.innerHTML =
+    '<i class="fa-solid fa-download"></i> Download TXT';
+
+  toolbar.appendChild(button);
+
+}
+
+
+/* ==========================================
+   09. PROMPT COMPARISON ENGINE
+========================================== */
+
+function analyzePrompt(text) {
+
+  const content = String(text || "").trim();
+
+  const words = content.match(/\b[\w'-]+\b/g) || [];
+
+  const lower = content.toLowerCase();
+
+  const hasRole =
+    /\b(act as|you are|role|expert|specialist|teacher)\b/i.test(content);
+
+  const hasTask =
+    /\b(create|write|explain|analyze|develop|generate|design|build|prepare|help)\b/i.test(content);
+
+  const hasContext =
+    /\b(for|about|audience|background|context|goal|purpose|topic)\b/i.test(content);
+
+  const hasFormat =
+    /\b(format|bullet|table|steps|checklist|structure|outline|sections)\b/i.test(content);
+
+  const hasConstraints =
+    /\b(avoid|include|must|should|limit|requirement|don't|do not)\b/i.test(content);
+
+  const sections = [
+
+    {
+      name: "Role definition",
+      present: hasRole
+    },
+
+    {
+      name: "Clear task",
+      present: hasTask
+    },
+
+    {
+      name: "Context or audience",
+      present: hasContext
+    },
+
+    {
+      name: "Output format",
+      present: hasFormat
+    },
+
+    {
+      name: "Instructions and constraints",
+      present: hasConstraints
+    }
+
+  ];
+
+  return {
+
+    wordCount: words.length,
+
+    characterCount: content.length,
+
+    sectionCount: sections.filter(
+      item => item.present
+    ).length,
+
+    sections: sections,
+
+    readability:
+      content.length === 0
+        ? "Empty"
+        : words.length < 20
+          ? "Short"
+          : words.length < 100
+            ? "Medium"
+            : "Detailed"
+
+  };
+
+}
+
+
+/* ==========================================
+   10. COMPARISON REPORT
+========================================== */
+
+function createComparisonReport(first, second) {
+
+  const a = analyzePrompt(first);
+
+  const b = analyzePrompt(second);
+
+  const differences = [
+
+    {
+      label: "Word count",
+      first: a.wordCount,
+      second: b.wordCount
+    },
+
+    {
+      label: "Character count",
+      first: a.characterCount,
+      second: b.characterCount
+    },
+
+    {
+      label: "Prompt structure elements",
+      first: `${a.sectionCount}/5`,
+      second: `${b.sectionCount}/5`
+    },
+
+    {
+      label: "Length category",
+      first: a.readability,
+      second: b.readability
+    }
+
+  ];
+
+  return {
+
+    first: a,
+
+    second: b,
+
+    differences: differences
+
+  };
+
+}
+
+
+/* ==========================================
+   11. COMPARISON DISPLAY
+========================================== */
+
+function renderComparison() {
+
+  const firstInput = getElement("comparePromptOne");
+
+  const secondInput = getElement("comparePromptTwo");
+
+  const result = getElement("comparisonResult");
+
+  if (!firstInput || !secondInput || !result) {
+
+    return;
+
+  }
+
+  const firstText = firstInput.value.trim();
+
+  const secondText = secondInput.value.trim();
+
+  if (!firstText || !secondText) {
+
+    showToast(
+      "Enter both prompts to compare.",
+      "error"
+    );
+
+    return;
+
+  }
+
+  const report = createComparisonReport(
+    firstText,
+    secondText
+  );
+
+  result.innerHTML = `
+
+    <div class="glass-panel" style="padding:18px;">
+
+      <h3>Comparison Results</h3>
+
+      <p class="section-description">
+        Compare prompt structure and length. These measurements do not predict actual AI response quality.
+      </p>
+
+      <div class="grid-2">
+
+        <div>
+
+          <h4>Prompt A</h4>
+
+          <p class="section-description">
+            ${report.first.wordCount} words
+          </p>
+
+          <div class="prompt-card-tags">
+
+            ${report.first.sections.map(item => `
+
+              <span class="tag">
+                ${item.present ? "✓" : "○"}
+                ${escapeHTML(item.name)}
+              </span>
+
+            `).join("")}
+
+          </div>
+
+        </div>
+
+        <div>
+
+          <h4>Prompt B</h4>
+
+          <p class="section-description">
+            ${report.second.wordCount} words
+          </p>
+
+          <div class="prompt-card-tags">
+
+            ${report.second.sections.map(item => `
+
+              <span class="tag">
+                ${item.present ? "✓" : "○"}
+                ${escapeHTML(item.name)}
+              </span>
+
+            `).join("")}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div style="overflow-x:auto;margin-top:20px;">
+
+        <table style="width:100%;border-collapse:collapse;text-align:left;">
+
+          <thead>
+
+            <tr>
+
+              <th style="padding:10px;">Metric</th>
+
+              <th style="padding:10px;">Prompt A</th>
+
+              <th style="padding:10px;">Prompt B</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${report.differences.map(item => `
+
+              <tr>
+
+                <td style="padding:10px;">
+                  ${escapeHTML(item.label)}
+                </td>
+
+                <td style="padding:10px;">
+                  ${escapeHTML(item.first)}
+                </td>
+
+                <td style="padding:10px;">
+                  ${escapeHTML(item.second)}
+                </td>
+
+              </tr>
+
+            `).join("")}
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  `;
+
+  showToast("Comparison completed!");
+
+}
+
+
+/* ==========================================
+   12. CLEAR COMPARISON
+========================================== */
+
+function clearComparison() {
+
+  const first = getElement("comparePromptOne");
+
+  const second = getElement("comparePromptTwo");
+
+  const result = getElement("comparisonResult");
+
+  if (first) first.value = "";
+
+  if (second) second.value = "";
+
+  if (result) result.innerHTML = "";
+
+  showToast("Comparison cleared.");
+
+}
+
+
+/* ==========================================
+   13. LOAD PROMPT INTO PLAYGROUND
+========================================== */
+
+function loadPromptIntoPlayground(prompt) {
+
+  const input = getPlaygroundInput();
+
+  if (!input || !prompt) return;
+
+  input.value = prompt.prompt;
+
+  input.focus();
+
+  const playground = getElement("playground");
+
+  if (playground) {
+
+    playground.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+  }
+
+  showToast("Prompt loaded into Playground.");
+
+}
+
+
+/* ==========================================
+   14. DRAFT MANAGER DISPLAY
+========================================== */
+
+function renderDraftManager() {
+
+  const drafts = readStorage(
+    "promptDrafts",
+    []
+  );
+
+  let manager = getElement("draftManager");
+
+  const playground = getElement("playground");
+
+  if (!playground) return;
+
+  if (!manager) {
+
+    manager = document.createElement("div");
+
+    manager.id = "draftManager";
+
+    manager.className = "glass-panel";
+
+    manager.style.padding = "18px";
+
+    manager.style.marginTop = "20px";
+
+    playground.appendChild(manager);
+
+  }
+
+  if (!Array.isArray(drafts) || !drafts.length) {
+
+    manager.innerHTML = `
+
+      <h3>Saved Drafts</h3>
+
+      <p class="section-description">
+        Your saved drafts will appear here.
+      </p>
+
+    `;
+
+    return;
+
+  }
+
+  manager.innerHTML = `
+
+    <h3>Saved Drafts (${drafts.length})</h3>
+
+    <div class="draft-list">
+
+      ${drafts.map(draft => `
+
+        <div class="card" style="padding:14px;margin-top:12px;">
+
+          <h4>
+            ${escapeHTML(draft.title)}
+          </h4>
+
+          <p class="section-description">
+            ${escapeHTML(
+              new Date(draft.savedAt).toLocaleString()
+            )}
+          </p>
+
+          <div class="prompt-card-actions">
+
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-action="load-draft"
+              data-id="${Number(draft.id)}"
+            >
+              Open
+            </button>
+
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-action="delete-draft"
+              data-id="${Number(draft.id)}"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+
+      `).join("")}
+
+    </div>
+
+  `;
+
+}
+
+
+/* ==========================================
+   15. OPEN SAVED DRAFT
+========================================== */
+
+function openSavedDraft(id) {
+
+  const drafts = readStorage(
+    "promptDrafts",
+    []
+  );
+
+  const draft = Array.isArray(drafts)
+    ? drafts.find(item => item.id === Number(id))
+    : null;
+
+  if (!draft) {
+
+    showToast("Draft not found.", "error");
+
+    return;
+
+  }
+
+  const input = getPlaygroundInput();
+
+  const output = getPlaygroundOutput();
+
+  if (input) input.value = draft.content;
+
+  if (output) output.value = draft.content;
+
+  const playground = getElement("playground");
+
+  if (playground) {
+
+    playground.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+  }
+
+  showToast("Draft opened.");
+
+}
+
+
+/* ==========================================
+   16. DELETE SAVED DRAFT
+========================================== */
+
+function deleteSavedDraft(id) {
+
+  const drafts = readStorage(
+    "promptDrafts",
+    []
+  );
+
+  if (!Array.isArray(drafts)) return;
+
+  const updated = drafts.filter(
+    item => item.id !== Number(id)
+  );
+
+  if (writeStorage("promptDrafts", updated)) {
+
+    renderDraftManager();
+
+    showToast("Draft deleted.");
+
+  }
+
+}
+
+
+/* ==========================================
+   17. ADD COMPARISON HELP TEXT
+========================================== */
+
+function addComparisonHelp() {
+
+  const result = getElement("comparisonResult");
+
+  if (!result || result.innerHTML.trim()) return;
+
+  result.innerHTML = `
+
+    <p class="section-description">
+
+      Enter two prompts above to compare their length and structural elements.
+
+    </p>
+
+  `;
+
+}
+
+
+/* ==========================================
+   18. PREPARE ADVANCED TOOLS
+========================================== */
+
+function prepareAdvancedTools() {
+
+  createDownloadButton();
+
+  renderDraftManager();
+
+  addComparisonHelp();
+
+}
+
+
+/* ==========================================
+   /* ==========================================
+   PART 6 — FINAL INTEGRATION
+========================================== */
+
+
+/* ==========================================
+   01. DOM HELPER
+========================================== */
+
+function on(id, event, callback) {
+
+  const element = document.getElementById(id);
+
+  if (element) {
+    element.addEventListener(event, callback);
+  }
+
+  return element;
+
+}
+
+
+/* ==========================================
+   02. MOBILE MENU
+========================================== */
+
+function openMobileMenu() {
+
+  const overlay = getElement("mobileOverlay");
+  const sidebar = getElement("sidebar");
+  const toggle = getElement("menuToggle");
+
+  if (overlay) overlay.style.display = "block";
+
+  if (sidebar) sidebar.style.display = "block";
+
+  if (toggle) {
+    toggle.setAttribute("aria-expanded", "true");
+  }
+
+  document.body.style.overflow = "hidden";
+
+}
+
+
+function closeMobileMenu() {
+
+  const overlay = getElement("mobileOverlay");
+  const sidebar = getElement("sidebar");
+  const toggle = getElement("menuToggle");
+
+  if (overlay) overlay.style.display = "none";
+
+  if (sidebar) sidebar.style.display = "none";
+
+  if (toggle) {
+    toggle.setAttribute("aria-expanded", "false");
+  }
+
+  document.body.style.overflow = "";
+
+}
+
+
+function toggleMobileMenu() {
+
+  const overlay = getElement("mobileOverlay");
+
+  if (overlay && overlay.style.display === "block") {
+
+    closeMobileMenu();
+
+  } else {
+
+    openMobileMenu();
+
+  }
+
+}
+
+
+/* ==========================================
+   03. SEARCH SYNCHRONIZATION
+========================================== */
+
+function syncSearchInputs(value, sourceId) {
+
+  const searchIds = [
+    "topSearch",
+    "heroSearch",
+    "librarySearch"
+  ];
+
+  searchIds.forEach(id => {
+
+    if (id === sourceId) return;
+
+    const input = getElement(id);
+
+    if (input) input.value = value;
+
+  });
+
+}
+
+
+function runSearch(sourceId) {
+
+  const source = getElement(sourceId);
+
+  if (!source) return;
+
+  const query = source.value.trim();
+
+  syncSearchInputs(query, sourceId);
+
+  visibleCount = 12;
+
+  renderLibrary();
+
+}
+
+
+function goToLibrary() {
+
+  const library = getElement("library");
+
+  if (library) {
+
+    library.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+  }
+
+}
+
+
+/* ==========================================
+   04. CATEGORY NAVIGATION
+========================================== */
+
+function selectCategory(categoryName) {
+
+  const filter = getElement("categoryFilter");
+
+  if (!filter) return;
+
+  const validCategory = categories.some(category =>
+    category.name === categoryName
+  );
+
+  if (!validCategory) return;
+
+  filter.value = categoryName;
+
+  visibleCount = 12;
+
+  renderLibrary();
+
+  goToLibrary();
+
+}
+
+
+/* ==========================================
+   05. PROMPT ACTION HANDLER
+========================================== */
+
+function handlePromptAction(action, id) {
+
+  const prompt = prompts.find(item =>
+    item.id === Number(id)
+  );
+
+  if (!prompt) return;
+
+  if (action === "open") {
+
+    openPrompt(prompt.id);
+
+  } else if (action === "copy") {
+
+    copyText(prompt.prompt);
+
+  } else if (action === "favorite") {
+
+    toggleFavorite(prompt.id);
+
+  } else if (action === "load-draft") {
+
+    openSavedDraft(id);
+
+  } else if (action === "delete-draft") {
+
+    deleteSavedDraft(id);
+
+  }
+
+}
+
+
+/* ==========================================
+   06. GLOBAL CLICK HANDLER
+========================================== */
+
+document.addEventListener("click", function(event) {
+
+  const actionButton = event.target.closest("[data-action]");
+
+  if (actionButton) {
+
+    event.preventDefault();
+
+    const action = actionButton.dataset.action;
+
+    const id = actionButton.dataset.id;
+
+    if (action === "load-draft") {
+
+      openSavedDraft(id);
+
+    } else if (action === "delete-draft") {
+
+      deleteSavedDraft(id);
+
+    } else {
+
+      handlePromptAction(action, id);
+
+    }
+
+    return;
+
+  }
+
+
+  const categoryButton = event.target.closest("[data-category]");
+
+  if (categoryButton) {
+
+    event.preventDefault();
+
+    selectCategory(categoryButton.dataset.category);
+
+    closeMobileMenu();
+
+    return;
+
+  }
+
+
+  const demoElement = event.target.closest("[data-demo]");
+
+  if (demoElement) {
+
+    event.preventDefault();
+
+    showToast(
+      "This feature will be available in a future update."
+    );
+
+    return;
+
+  }
+
+
+  const navigationLink = event.target.closest(
+    ".nav-links a, #sidebar a"
+  );
+
+  if (navigationLink) {
+
+    closeMobileMenu();
+
+  }
+
+});
+
+
+/* ==========================================
+   07. ANNOUNCEMENT BAR
+========================================== */
+
+on("closeAnnouncement", "click", function() {
+
+  const announcement = getElement("announcementBar");
+
+  if (announcement) {
+
+    announcement.style.display = "none";
+
+  }
+
+});
+
+
+/* ==========================================
+   08. NAVIGATION MENU
+========================================== */
+
+on("menuToggle", "click", function() {
+
+  toggleMobileMenu();
+
+});
+
+
+on("mobileOverlay", "click", function(event) {
+
+  if (event.target === this) {
+
+    closeMobileMenu();
+
+  }
+
+});
+
+
+on("sidebar", "click", function(event) {
+
+  event.stopPropagation();
+
+});
+
+
+/* ==========================================
+   09. SEARCH EVENTS
+========================================== */
+
+["topSearch", "heroSearch", "librarySearch"].forEach(id => {
+
+  on(id, "input", function() {
+
+    runSearch(id);
+
+  });
+
+});
+
+
+on("heroSearchButton", "click", function() {
+
+  const search = getElement("heroSearch");
+
+  if (!search) return;
+
+  runSearch("heroSearch");
+
+  goToLibrary();
+
+});
+
+
+on("heroSearch", "keydown", function(event) {
+
+  if (event.key === "Enter") {
+
+    event.preventDefault();
+
+    runSearch("heroSearch");
+
+    goToLibrary();
+
+  }
+
+});
+
+
+on("topSearch", "keydown", function(event) {
+
+  if (event.key === "Enter") {
+
+    event.preventDefault();
+
+    runSearch("topSearch");
+
+    goToLibrary();
+
+  }
+
+});
+
+
+/* ==========================================
+   10. LIBRARY FILTER EVENTS
+========================================== */
+
+["categoryFilter", "levelFilter", "sortFilter"].forEach(id => {
+
+  on(id, "change", function() {
+
+    visibleCount = 12;
+
+    renderLibrary();
+
+  });
+
+});
+
+
+/* ==========================================
+   11. LOAD MORE PROMPTS
+========================================== */
+
+on("loadMore", "click", function() {
+
+  visibleCount += 12;
+
+  renderLibrary();
+
+});
+
+
+/* ==========================================
+   12. FAVORITES NAVIGATION
+========================================== */
+
+on("favoritesShortcut", "click", function(event) {
+
+  const favoritesSection = getElement("favorites");
+
+  if (favoritesSection) {
+
+    event.preventDefault();
+
+    favoritesSection.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+  }
+
+});
+
+
+/* ==========================================
+   13. DAILY PROMPT
+========================================== */
+
+on("dailyOpen", "click", function() {
+
+  if (dailyPrompt) {
+
+    openPrompt(dailyPrompt.id);
+
+  }
+
+});
+
+
+/* ==========================================
+   14. MODAL EVENTS
+========================================== */
+
+on("modalClose", "click", function() {
+
+  closeModal();
+
+});
+
+
+on("promptModal", "click", function(event) {
+
+  if (event.target === this) {
+
+    closeModal();
+
+  }
+
+});
+
+
+on("modalCopy", "click", function() {
+
+  if (activePrompt) {
+
+    copyText(activePrompt.prompt);
+
+  }
+
+});
+
+
+on("modalFavorite", "click", function() {
+
+  if (activePrompt) {
+
+    toggleFavorite(activePrompt.id);
+
+  }
+
+});
+
+
+on("modalCustomize", "click", function() {
+
+  if (!activePrompt) return;
+
+  const selectedPrompt = activePrompt;
+
+  closeModal();
+
+  loadPromptIntoPlayground(selectedPrompt);
+
+});
+
+
+document.addEventListener("keydown", function(event) {
+
+  if (event.key === "Escape") {
+
+    closeModal();
+
+    closeMobileMenu();
+
+  }
+
+});
+
+
+/* ==========================================
+   15. PLAYGROUND EVENTS
+========================================== */
+
+on("customizeButton", "click", function() {
+
+  runPlayground();
+
+});
+
+
+on("clearPlayground", "click", function() {
+
+  clearPlayground();
+
+});
+
+
+on("copyPlayground", "click", function() {
+
+  const output = getPlaygroundOutput();
+
+  const input = getPlaygroundInput();
+
+  const content = output?.value.trim()
+    ? output.value
+    : input?.value || "";
+
+  copyText(content);
+
+});
+
+
+on("saveDraft", "click", function() {
+
+  savePlaygroundDraft();
+
+});
+
+
+/* ==========================================
+   16. DOWNLOAD BUTTON EVENT
+========================================== */
+
+on("downloadPlayground", "click", function() {
+
+  const output = getPlaygroundOutput();
+
+  const input = getPlaygroundInput();
+
+  const content = output?.value.trim()
+    ? output.value
+    : input?.value || "";
+
+  downloadPromptText(
+    content,
+    "prompt-customized.txt"
+  );
+
+});
+
+
+/* ==========================================
+   17. COMPARISON EVENTS
+========================================== */
+
+on("compareButton", "click", function() {
+
+  renderComparison();
+
+});
+
+
+on("clearCompare", "click", function() {
+
+  clearComparison();
+
+});
+
+
+/* ==========================================
+   18. BACK TO TOP BUTTON
+========================================== */
+
+const backToTop = getElement("backToTop");
+
+if (backToTop) {
+
+  backToTop.addEventListener("click", function() {
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  });
+
+}
+
+
+/* ==========================================
+   19. SCROLL BEHAVIOR
+========================================== */
+
+window.addEventListener("scroll", function() {
+
+  const button = getElement("backToTop");
+
+  if (!button) return;
+
+  button.style.display =
+    window.scrollY > 500
+      ? "inline-grid"
+      : "none";
+
+}, { passive: true });
+
+
+/* ==========================================
+   20. RESPONSIVE CSS PATCH
+========================================== */
+
+const responsivePatch = document.createElement("style");
+
+responsivePatch.textContent = `
+
+  .category-card {
+    text-align: left;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .prompt-card {
+    min-width: 0;
+  }
+
+  .prompt-card-content {
+    overflow-wrap: anywhere;
+  }
+
+  .prompt-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 14px;
+  }
+
+  .prompt-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .prompt-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  #promptModal.active {
+    display: flex;
+    visibility: visible;
+    opacity: 1;
+  }
+
+  #promptModal {
+    z-index: 9999;
+  }
+
+  #mobileOverlay {
+    z-index: 9997;
+  }
+
+  #sidebar {
+    z-index: 9998;
+  }
+
+  #topSearch {
+    max-width: 180px;
+  }
+
+  #backToTop {
+    z-index: 999;
+  }
+
+  .prompt-card pre,
+  .glass-panel pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 768px) {
+
+    #topSearch {
+      max-width: 115px;
+    }
+
+    .prompt-card-actions .btn {
+      flex: 1;
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+  }
+
+  @media (max-width: 480px) {
+
+    #topSearch {
+      display: none;
+    }
+
+    .grid-4,
+    .grid-3,
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+
+    .prompt-card-actions {
+      flex-wrap: nowrap;
+    }
+
+    .prompt-card-actions .btn {
+      min-width: 0;
+    }
+
+  }
+
+`;
+
+document.head.appendChild(responsivePatch);
+
+
+/* ==========================================
+   21. INITIALIZE WEBSITE
+========================================== */
+
+function initializeWebsite() {
+
+  try {
+
+    // Database validation
+    validatePromptDatabase();
+
+    // Load saved user data
+    loadFavorites();
+
+    // Render all sections
+    renderCategories();
+
+    renderTrending();
+
+    renderLatest();
+
+    renderLibrary();
+
+    renderFavorites();
+
+    renderDailyPrompt();
+
+    // Prepare advanced tools
+    prepareAdvancedTools();
+
+    // Restore previous draft
+    restorePlaygroundDraft();
+
+    // Update copyright year
+    const year = getElement("currentYear");
+
+    if (year) {
+
+      year.textContent = new Date().getFullYear();
+
+    }
+
+    // Close mobile navigation initially
+    closeMobileMenu();
+
+    // Set modal initial accessibility state
+    const modal = getElement("promptModal");
+
+    if (modal) {
+
+      modal.setAttribute("aria-hidden", "true");
+
+    }
+
+    console.info(
+      "PROMPT website initialized successfully."
+    );
+
+    console.info(
+      "Total prompts:",
+      prompts.length
+    );
+
+    showToast("Welcome to PROMPT!");
+
+  } catch (error) {
+
+    console.error(
+      "Website initialization error:",
+      error
+    );
+
+    showToast(
+      "Some features could not load. Check the browser console.",
+      "error"
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   22. START APPLICATION
+========================================== */
+
+initializeWebsite();
+
+
+/* ==========================================
+   END OF PROMPT WEBSITE
+========================================== */
+</script>
+
+</body>
+</html>
+========================================== */
+========================================== */
+========================================== */
